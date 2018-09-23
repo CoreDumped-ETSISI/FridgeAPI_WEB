@@ -3,9 +3,6 @@
 const express = require('express');
 const router = express.Router();
 
-const config = require('../config');
-const auth = require('../middlewares/auth');
-
 /* WEB ROUTES */
 
 router.get('/', function (req, res, next) {
@@ -40,24 +37,8 @@ router.get('/forgot-password', function (req, res, next) {
     res.render('forgotPassword', {title: 'Express'});
 });
 
-router.get('/admin/add-new-product', function (req, res, next) {
-    res.render('admin_products', {title: 'Express'});
-});
-
-router.get('/admin/add-payment', function (req, res, next) {
-    res.render('admin_payments', {title: 'Express'});
-});
-
-router.get('/admin/add-stock', function (req, res, next) {
-    res.render('admin_stock', {title: 'Express'});
-});
-
-router.get('/admin/user-list', function (req, res, next) {
-    res.render('admin_user_list', {title: 'Express'});
-});
-
-router.get('/admin', function (req, res, next) {
-    res.render('admin', {title: 'Express'});
+router.get('/reset-password', function (req, res, next) {
+    res.render('resetPassword', {title: 'Express'});
 });
 
 module.exports = router;

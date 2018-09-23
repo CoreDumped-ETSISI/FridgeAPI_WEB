@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block content
     header
@@ -30,31 +30,4 @@ block content
 
 block scripts
     script(src='/js/croppie/croppie.js')
-    script(src='/js/admin_add_products.js')
-
-    //
-    //    .row
-    //    .row
-    //    .row
-    //        .col.s8.offset-s2.m6.offset-m3.l4.offset-l4.xl4.offset-xl4
-    //            .card
-    //                form(id="myform" name="myform" action="/product/save" enctype="multipart/form-data" method="post")
-    //                    .card-image
-    //                        img#productImage(src="/images/default-product-image.jpg")
-    //                        input#fileElem(type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files)")
-    //                        a#fileSelect.btn-floating.halfway-fab.waves-effect.waves-light.red
-    //                            i.material-icons edit
-    //                    .card-content
-    //                        input#productName.validate(type="text" required)
-    //                        label(for="productName") Product Name
-    //                        input#stock.validate(type="number" step="1" min="0"  required)
-    //                        label(for="stock") Stock
-    //                        input#marketPrice.validate(type="number" step="0.01" min="0" required)
-    //                        label(for="marketPrice") Market Price
-    //
-    //                    .card-action
-    //                        a(href="#" onclick="resetFields()") Reset
-    //                        a(href="#" onclick="addProduct()") Send
-    //
-    //block scripts
-    //    script(src="/js/admin_add_products.js")
+    script(src='/js/admin/admin_add_products.js')

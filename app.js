@@ -11,6 +11,7 @@ require('./services/backup'); //This activate the automatic backups
 
 const routes = require('./routes');
 const webRoutes = require('./routes/webRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const purchaseRoutes = require('./routes/purchaseRoutes');
@@ -41,6 +42,7 @@ logger(app);
 
 app.use('/', routes);
 app.use('/', webRoutes);
+app.use('/admin', adminRoutes);
 app.use('/product', productRoutes);
 app.use('/payment', paymentRoutes);
 app.use('/purchase', purchaseRoutes);
