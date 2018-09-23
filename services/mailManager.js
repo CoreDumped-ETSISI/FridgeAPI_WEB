@@ -4,7 +4,7 @@ const config = require('../config');
 
 function sendWelcomeEmail(email, name, token) { //TODO Catch errors and add url for email verification
     const encodeEmail = services.encrypt(email);
-    const link = `http://${process.env.HOST}/verifyEmail?token=${encodeEmail}/${token}`;
+    const link = `http://${process.env.HOST}/verify-email?token=${encodeEmail}/${token}`;
     sgMail.setApiKey(config.SENDGRID_API_KEY);
     sgMail.setSubstitutionWrappers('{{', '}}');
     const msg = {
@@ -24,7 +24,7 @@ function sendWelcomeEmail(email, name, token) { //TODO Catch errors and add url 
 
 function sendPasswordEmail(email, name, token) { //TODO Catch errors
     const encodeEmail = services.encrypt(email);
-    const link = `http://${process.env.HOST}/resetPassword?token=${encodeEmail}/${token}`;
+    const link = `http://${process.env.HOST}/reset-password?token=${encodeEmail}/${token}`;
     sgMail.setApiKey(config.SENDGRID_API_KEY);
     sgMail.setSubstitutionWrappers('{{', '}}');
     const msg = {
