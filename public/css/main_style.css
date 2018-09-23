@@ -1,0 +1,324 @@
+/* Custom Stylesheet */
+/**
+*
+*Verde Core = #64dd17;
+*contraste = 900251;
+*claro=#ccc;
+*oscuro = #262626;
+*más oscuro = #1d1d1d;
+*/
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:400,700');
+
+.roboto-mono {
+    font-family: "Roboto Mono", serif !important;
+}
+
+.verde-core {
+    background-color: #64dd17 !important;
+}
+
+.claro {
+    background-color: white !important;
+}
+
+.texto-verde-core {
+    color: #64dd17 !important;
+}
+
+.oscuro {
+    background-color: #262626 !important;
+}
+
+.texto-oscuro {
+
+    color: #262626 !important;
+}
+
+.mas-oscuro {
+    background-color: #1d1d1d !important;
+}
+
+.texto-mas-oscuro {
+    color: #1d1d1d !important;
+}
+
+.texto-claro {
+    color: white !important;
+}
+
+.btn, .btn-large {
+    color: #262626;
+    background-color: #64dd17;
+}
+
+.btn:hover, .btn-large:hover {
+    color: #262626;
+    background-color: #a5e27f;
+}
+
+.btn:focus, .btn-large:focus {
+    color: #1d1d1d;
+    background-color: white;
+}
+
+.sidebar-button {
+    width: 100%;
+    border-radius: 25px;
+    margin: auto;
+}
+
+.sidebar-margins {
+    margin: 0 32px;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    background-color: #1d1d1d;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.store-padding {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+    .store-padding {
+        padding-left: 0;
+    }
+}
+
+.btn i, .btn-large i, .btn-floating i, .btn-large i, .btn-flat i {
+    font-size: 1.8rem;
+    line-height: inherit;
+}
+
+#logOut {
+    margin-top: 1em;
+    background-color: #900251;
+    color: white;
+}
+
+#cartList {
+    padding: 15px;
+    color: #1d1d1d;
+    background-color: white;
+    overflow-y: scroll;
+    max-height: 40vh;
+    min-height: 10vh;
+}
+
+#cartList img {
+    border-radius: 50%;
+}
+
+.purchase-data-container {
+    padding-left: 32px;
+}
+
+.cartElement {
+    margin-top: 5px;
+    font-size: 1.2em;
+}
+
+.header {
+    background-color: #262626;
+    padding: 5px;
+    min-height: 80px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+div.center {
+    margin: 0 auto;
+}
+
+.logo-header {
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.sublink {
+    color: #262626;
+}
+
+.page-footer {
+    background-color: #1d1d1d;
+}
+
+.page-footer .footer-copyright {
+    text-align: center;
+    color: #ccc;
+}
+
+.page-footer a {
+    color: #ccc;
+}
+
+.page-footer a:hover {
+    color: #64dd17;
+    text-decoration: underline;
+}
+
+.input-field .prefix.active {
+    color: #64dd17;
+}
+
+label .active {
+    color: #64dd17;
+}
+
+input:not([type]):focus:not([readonly]) + label,
+input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type=password]:not(.browser-default):focus:not([readonly]) + label,
+input[type=email]:not(.browser-default):focus:not([readonly]) + label,
+input[type=url]:not(.browser-default):focus:not([readonly]) + label,
+input[type=time]:not(.browser-default):focus:not([readonly]) + label,
+input[type=date]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]) + label,
+input[type=tel]:not(.browser-default):focus:not([readonly]) + label,
+input[type=number]:not(.browser-default):focus:not([readonly]) + label,
+input[type=search]:not(.browser-default):focus:not([readonly]) + label,
+textarea.materialize-textarea:focus:not([readonly]) + label {
+    color: #64dd17;
+}
+
+/*Afecta al input cuando no está seleccionado*/
+input:not([type]), input[type="text"]:not(.browser-default), input[type="password"]:not(.browser-default), input[type="email"]:not(.browser-default), input[type="url"]:not(.browser-default), input[type="time"]:not(.browser-default), input[type="date"]:not(.browser-default), input[type="datetime"]:not(.browser-default), input[type="datetime-local"]:not(.browser-default), input[type="tel"]:not(.browser-default), input[type="number"]:not(.browser-default), input[type="search"]:not(.browser-default), textarea.materialize-textarea {
+    border-bottom: 1px solid #262626;
+}
+
+/*Afecta al input cuando está seleccionado*/
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #64dd17;
+    -webkit-box-shadow: 0 0 0 0 #262626;
+    box-shadow: 0 0 0 0 #262626;
+}
+
+/*Afecta al OK del checkbox*/
+[type="checkbox"]:checked + label::before {
+    border-right: 3px solid #64dd17;
+    border-bottom: 3px solid #64dd17;
+}
+
+.oculto {
+    display: none;
+}
+
+/*relativo a las tarjetas de producto*/
+
+.products-section {
+    padding: 1rem;
+}
+
+.waves-effect img {
+    border-radius: 5px;
+}
+
+.linea-producto {
+    padding: 0;
+    margin: 0;
+}
+
+.panel-producto {
+    padding: 0;
+    width: 100%;
+}
+
+
+.total-text {
+    width: 50%;
+    padding-left: 1em;
+}
+
+.info-producto {
+    position: relative;
+}
+
+.titulo-producto {
+    position: relative;
+    padding-top: 0.5em;
+    color: #1d1d1d;
+    font-size: 1.6em;
+    font-family: "Roboto Slab", monospace;
+}
+
+.precio-producto {
+    position: relative;
+    padding-top: 0.2em;
+    color: #262626;
+    font-size: 1.4em;
+    font-family: "Roboto mono", monospace;
+}
+
+.stock-producto {
+    position: absolute;
+    font-size: 1em;
+    color: #262626;
+    font-family: "Roboto mono", monospace, monospace;
+    font-weight: 100;
+    margin-left: 0.5em;
+    bottom: 5px;
+    right: 8px;
+}
+
+.saldo-position {
+    position: absolute;
+    top: 15px;
+    right: 32px;
+}
+
+.precio-total {
+    font-size: 1.6em;
+}
+
+#product-name {
+    background-color: #00000088;
+    border-top-right-radius: 25px;
+    max-width: 80%;
+    padding: 16px;
+    font-size: 21px;
+}
+
+#product-stock {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+}
+
+#product-price {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: default;
+    color: white;
+}

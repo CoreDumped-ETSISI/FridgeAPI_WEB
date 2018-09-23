@@ -1,0 +1,40 @@
+extends layout
+
+block content
+    header.store-padding
+        nav.header(role='navigation')
+            .nav-wrapper.container.center
+                img.logo-header(src='images/logo.png')
+    ul#slide-out.sidenav.sidenav-fixed.oscuro.texto-claro
+        li
+            .user-view.oscuro
+                .background
+                a#photo(href='#!user')
+                a(href='#!name')
+                    span.white-text.name
+                a(href='#!email')
+                    span.white-text.email
+                span.white-text.saldo-position.roboto-mono
+                    | Saldo:
+                    span#saldo.white-text
+        block navbar-content
+        li
+            div(style='padding-top:25px;')
+                .action-btn.sidebar-margins
+                    a.waves-effect.waves-light.btn.sidebar-button.mas-oscuro.texto-verde-core(href='/store') Tienda
+                .action-btn.sidebar-margins
+                    a.waves-effect.waves-light.btn.sidebar-button.mas-oscuro.texto-verde-core(href='/purchase-history') Historial de compras
+                .action-btn.sidebar-margins
+                    a.waves-effect.waves-light.btn.sidebar-button.mas-oscuro.texto-verde-core(href='/payment-history') Historial de pagos
+            // Cerrar sesión
+            .action-btn.sidebar-margins
+                a#logOut.waves-effect.waves-light.btn.sidebar-button(title='log out' onclick='deleteCredentials()')
+                    | Cerrar sesi&oacute;n
+
+    main.store-padding
+        block main-content
+        .fixed-action-btn.hide-on-large-only
+            a.waves-effect.waves-light.btn.btn-floating.sidenav-trigger(href='#' data-target="slide-out")
+                i.material-icons menu
+
+block scripts

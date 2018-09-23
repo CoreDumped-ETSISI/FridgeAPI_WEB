@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    header
+        nav.header.full-width(role='navigation')
+            .nav-wrapper.container.center
+                a(href="./")
+                    img.logo-header(src='/images/logo.png')
+    main#login-page.row.valign-wrapper(style='min-width: 100%; padding: 0em 2em 0em 2em; margin-bottom: 0em')
+        .col.s12.m8.offset-m2.l6.offset-l3.z-depth-4.card-panel(style='padding: 2em')
+            .input-field
+                select#comboProducts
+                    option(value="" disabled selected) ...
+                label Product list
+            .row
+            .input-field
+                input#productName(type='text')
+                label(for="productName") Name
+            .input-field
+                input#productStock(type='text')
+                label(for="productStock") Stock
+            .input-field
+                input#productPrice(type='number' min='0' step='0.01')
+                label(for="productPrice") Price
+            .input-field
+                input#productUnits(type='number' min='0')
+                label(for="productUnits") Units (only used to calculate the price)
+            .input-field
+                a.btn.btnSendPayment.col.s12(onclick='sendStock()') UPDATE
+
+block scripts
+    script(src='/js/admin_stock.js')

@@ -1,0 +1,9 @@
+extends navbar_layout
+
+block main-content
+    .row.valign-wrapper(style='min-width: 100%; padding: 0em 2em 0em 2em; margin-bottom: 0em')
+        .col.s12.z-depth-4.card-panel(style='padding: 2em')
+            ul#purchaseList.collapsible.popout
+
+block scripts
+    script(src="/js/purchase_history.js")
