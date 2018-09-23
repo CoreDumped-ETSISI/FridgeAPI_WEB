@@ -16,10 +16,6 @@ function getProfile() {
     });
 }
 
-function date_sort(elem){
-
-}
-
 function getPaymentList() {
     request('GET', '/payment', null, (res) => {
         for (let i = 0; i < res.length; i++) {

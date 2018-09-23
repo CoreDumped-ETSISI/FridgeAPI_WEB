@@ -1,12 +1,14 @@
-extends layout
+extends header_layout
 
-block content
-    header
-        nav.header.full-width(role='navigation')
-            .nav-wrapper.container.center
-                a(href="./")
-                    img.logo-header(src='images/logo.png')
-    main#login-page.row.valign-wrapper(style='min-width: 100%; padding: 0em 2em 0em 2em; margin-bottom: 0em')
+block main-content
+    .preloader-wrapper.big.active(style="width: 256px; height:256px;margin:auto;")
+        .spinner-layer.spinner-green-only
+            .circle-clipper.left
+                .circle
+            .gap-patch
+                .circle
+            .circle-clipper.right
+                .circle
 
 block scripts
-    script(src='js/verifyEmail.js')
+    script(src='/js/verifyEmail.js')
