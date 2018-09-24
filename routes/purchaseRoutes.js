@@ -10,7 +10,7 @@ const admin = require('../middlewares/admin');
 router.post('/', auth, verified, purchaseCtrl.savePurchase);
 router.get('/', auth, purchaseCtrl.getPurchaseList);
 router.get('/listAll', auth, admin, purchaseCtrl.getPurchaseListAll);
-router.get('/recents', auth, verified, purchaseCtrl.getLastPurchases);
+router.get('/recents', auth, purchaseCtrl.getLastPurchases);
 router.get('/id/:id', auth, purchaseCtrl.getPurchase);
 router.delete('/id/:id', auth, admin, purchaseCtrl.deletePurchase);
 
