@@ -3,7 +3,6 @@
 const express = require('express');
 const router = express.Router();
 const purchaseCtrl = require('../controllers/purchase');
-const verified = require('../middlewares/verified');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 
