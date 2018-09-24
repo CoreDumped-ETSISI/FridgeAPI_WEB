@@ -6,7 +6,7 @@ const purchaseCtrl = require('../controllers/purchase');
 const auth = require('../middlewares/auth');
 const admin = require('../middlewares/admin');
 
-router.post('/', auth, verified, purchaseCtrl.savePurchase);
+router.post('/', auth, purchaseCtrl.savePurchase);
 router.get('/', auth, purchaseCtrl.getPurchaseList);
 router.get('/listAll', auth, admin, purchaseCtrl.getPurchaseListAll);
 router.get('/recents', auth, purchaseCtrl.getLastPurchases);
