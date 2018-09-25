@@ -52,34 +52,62 @@ function handleFiles(files) {
 }
 
 function addProduct() {
-    cropImg.result('blob').then(function (blob) {
-        const formData = new FormData();
-        formData.append("name", $('#productName').val());
-        formData.append("stock", $('#stock').val());
-        formData.append("price", $('#marketPrice').val());
-        formData.append("image", blob);
+    if(!cropImg){
+            const formData = new FormData();
+            formData.append("name", $('#productName').val());
+            formData.append("stock", $('#stock').val());
+            formData.append("price", $('#marketPrice').val());
 
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', "/product", true);
-        xhr.onload = function (e) {
-            switch (xhr.status) {
-                case 200:
-                case 201:
-                    resetFields();
-                    M.toast({html: 'Product created', classes: 'green'});
-                    break;
-                case 409:
-                    M.toast({html: 'Already exist a product with this name', classes: 'red'});
-                    break;
-                default:
-                    M.toast({html: 'There was a error with your request', classes: 'red'});
-                    break;
-            }
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', "/product", true);
+            xhr.onload = function (e) {
+                switch (xhr.status) {
+                    case 200:
+                    case 201:
+                        resetFields();
+                        M.toast({html: 'Product created', classes: 'green'});
+                        break;
+                    case 409:
+                        M.toast({html: 'Already exist a product with this name', classes: 'red'});
+                        break;
+                    default:
+                        M.toast({html: 'There was a error with your request', classes: 'red'});
+                        break;
+                }
 
-        };
-        xhr.send(formData);
-        return false;
-    });
+            };
+            xhr.send(formData);
+            return false;
+    } else {
+        cropImg.result('blob').then(function (blob) {
+            const formData = new FormData();
+            formData.append("name", $('#productName').val());
+            formData.append("stock", $('#stock').val());
+            formData.append("price", $('#marketPrice').val());
+            formData.append("image", blob);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', "/product", true);
+            xhr.onload = function (e) {
+                switch (xhr.status) {
+                    case 200:
+                    case 201:
+                        resetFields();
+                        M.toast({html: 'Product created', classes: 'green'});
+                        break;
+                    case 409:
+                        M.toast({html: 'Already exist a product with this name', classes: 'red'});
+                        break;
+                    default:
+                        M.toast({html: 'There was a error with your request', classes: 'red'});
+                        break;
+                }
+
+            };
+            xhr.send(formData);
+            return false;
+        });
+    }
 }
 
 function resetFields() {
@@ -87,5 +115,5 @@ function resetFields() {
     $('#stock').val("");
     $('#marketPrice').val("");
     $('#productImage').attr("src", "/images/default-product-image.jpg");
-    cropImg.destroy();
+    if(cropImg) cropImg.destroy();
 }

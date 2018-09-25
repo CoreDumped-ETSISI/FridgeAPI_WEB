@@ -104,13 +104,12 @@ function saveProduct(req, res) {
     const price = req.body.price;
     const stock = req.body.stock;
     const ext = image.obtainExt(req.file);
+    let imagePath = null;
 
     if (!input.validProductName(name) ||
         !input.validFloat(price) ||
         !input.validInt(stock))
         return res.sendStatus(400);
-
-    const imagePath = path.join(config.PRODUCTS_IMAGES_PATH, image.convertToValidName(name) + ext);
 
     Product.findOne({name: name}, (err, productExist) => {
         if (err) return res.sendStatus(500);
@@ -118,6 +117,8 @@ function saveProduct(req, res) {
 
         const marketPrice = price / stock;
         const finalPrice = services.calcPrice(price / stock);
+        if(ext) imagePath = path.join(config.PRODUCTS_IMAGES_PATH, image.convertToValidName(name) + ext);
+        else imagePath = config.DEFAULT_PRODUCT_IMAGE;
 
         const product = new Product({
             name: name,
@@ -129,8 +130,7 @@ function saveProduct(req, res) {
 
         product.save((err, productStored) => {
             if (err) return res.sendStatus(500);
-
-            image.saveToDisk(req.file, imagePath, null);
+            if(ext) image.saveToDisk(req.file, imagePath, null);
             return res.status(200).send(productStored)
         })
     })
