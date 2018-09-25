@@ -62,17 +62,21 @@ function productCard(product) {
 }
 
 function addToCart(id) {
-    $("#empty").empty();
+    let productStock = $('#' + id).find('.badge');
+    let stock = parseInt(productStock.text());
+    if (stock > 0) {
+        $("#empty").empty();
 
-    let product = productList.filter((elem) => {
-        return elem._id === id;
-    })[0];
-    console.log(product);
-    cart.push(product);
-    updateStock(id, -1);
+        let product = productList.filter((elem) => {
+            return elem._id === id;
+        })[0];
+        console.log(product);
+        cart.push(product);
+        updateStock(id, -1);
 
-    createCartElement(product, (cart.length - 1));
-    reloadCart();
+        createCartElement(product, (cart.length - 1));
+        reloadCart();
+    }
 }
 
 function reloadCart() {

@@ -64,7 +64,7 @@ function loadProductList() {
 }
 
 function sendStock() {
-    cropImg.result('blob').then(function (blob) {
+    if (!cropImg) {
         const e = document.getElementById("comboProducts");
         const idProduct = e.options[e.selectedIndex].value;
 
@@ -73,7 +73,6 @@ function sendStock() {
         formData.append("stock", $('#productStock').val());
         formData.append("price", $('#productPrice').val());
         formData.append("units", $('#productUnits').val());
-        formData.append("image", blob);
 
         const xhr = new XMLHttpRequest();
         xhr.open('PATCH', '/product/' + idProduct, true);
@@ -92,7 +91,38 @@ function sendStock() {
         };
         xhr.send(formData);
         return false;
-    });
+    } else {
+        cropImg.result('blob').then(function (blob) {
+            const e = document.getElementById("comboProducts");
+            const idProduct = e.options[e.selectedIndex].value;
+
+            const formData = new FormData();
+            formData.append("name", $('#productName').val());
+            formData.append("stock", $('#productStock').val());
+            formData.append("price", $('#productPrice').val());
+            formData.append("units", $('#productUnits').val());
+            formData.append("image", blob);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('PATCH', '/product/' + idProduct, true);
+            xhr.onload = function (e) {
+                switch (xhr.status) {
+                    case 200:
+                    case 201:
+                        resetFields();
+                        M.toast({html: 'Product updated', classes: 'green'});
+                        break;
+                    default:
+                        M.toast({html: 'There was a error with your request', classes: 'red'});
+                        break;
+                }
+
+            };
+            xhr.send(formData);
+            return false;
+        });
+    }
+
 }
 
 function resetFields() {
@@ -101,5 +131,5 @@ function resetFields() {
     $('#productPrice').val("");
     $('#productUnits').val("");
     $('#productImage').attr("src", "/images/default-product-image.jpg");
-    cropImg.destroy();
+    if (cropImg) cropImg.destroy();
 }

@@ -115,7 +115,7 @@ main {
     padding: 15px;
     color: #1d1d1d;
     background-color: white;
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 40vh;
     min-height: 10vh;
 }
