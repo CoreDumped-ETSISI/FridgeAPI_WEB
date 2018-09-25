@@ -37,13 +37,13 @@ function saveToDisk(file, imagePath, next) {
 
 function convertToValidName(imageName){
     let newName = imageName;
-    newName.replace(' ','_');
-    newName.replace('ñ','n');
-    newName.replace('á','a');
-    newName.replace('é','e');
-    newName.replace('í','i');
-    newName.replace('ó','o');
-    newName.replace('ú','u');
+    newName.replace(/ /g,"_");
+    newName.replace('/ñ/g','n');
+    newName.replace('/á/g','a');
+    newName.replace('/é/g','e');
+    newName.replace('/í/g','i');
+    newName.replace('/ó/g','o');
+    newName.replace('/ú/g','u');
     return encodeURIComponent(newName);
 }
 
