@@ -37,14 +37,19 @@ function saveToDisk(file, imagePath, next) {
 
 function convertToValidName(imageName) {
     let newName = imageName;
-    newName = newName.replace(/ /g, '_');
-    newName = newName.replace(/ñ/gi, 'n');
-    newName = newName.replace(/á/gi, 'a');
-    newName = newName.replace(/é/gi, 'e');
-    newName = newName.replace(/í/gi, 'i');
-    newName = newName.replace(/ó/gi, 'o');
-    newName = newName.replace(/ú/gi, 'u');
-    return encodeURIComponent(newName);
+    const specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.;\\";
+    for (let i = 0; i < specialChars.length; i++) {
+        newName = newName.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+    }
+    newName = newName.toLowerCase();
+    newName = newName.replace(/ /g, "_");
+    newName = newName.replace(/á/gi, "a");
+    newName = newName.replace(/é/gi, "e");
+    newName = newName.replace(/í/gi, "i");
+    newName = newName.replace(/ó/gi, "o");
+    newName = newName.replace(/ú/gi, "u");
+    newName = newName.replace(/ñ/gi, "n");
+    return newName;
 }
 
 module.exports = {
