@@ -1,85 +1,42 @@
 
-let imageFile;
-let cropImg;
+let croppieObj;
 
-const fileSelect = $("#avatarImage");
-const fileElem = $("#fileElem");
+initFileInput('avatarImage', 'fileElem');
 
-fileSelect.click(function () {
-    fileElem.click();
-});
-
-function check_image_type(file) {
-    const extension = file.substr((file.lastIndexOf('.') + 1));
-    return extension === 'jpg' ||
-        extension === 'jpeg' ||
-        extension === 'gif' ||
-        extension === 'png';
-}
-
-function handleFiles(files) {
-    for (let i = 0; i < files.length; i++) {
-        let file = files[i];
-
-        if (!file.type.startsWith('image/')) {
-            continue;
-        }
-
-        let img = document.getElementById("avatarImage");
-        img.classList.add("obj");
-        img.file = file;
-        imageFile = file;
-
-        const reader = new FileReader();
-        reader.onload = (function (aImg) {
-            return function (e) {
-                aImg.src = e.target.result;
-            };
-        })(img);
-        reader.readAsDataURL(file);
-    }
-    setTimeout(() => {
-        const el = document.getElementById('avatarImage');
-        cropImg = new Croppie(
-            el,
-            {
-                viewport: {width: 250, height: 250, type: 'circle'},
-                boundary: {width: 300, height: 300},
-                showZoomer: false
-            }
-        );
-    }, 100);
+function handleFiles(files, id) {
+    handleImages(files, id, null, (file, croppieInstance) => {
+        if(!file) M.toast({html: 'Invalid image', classes: 'red'});
+        croppieObj = croppieInstance;
+    })
 }
 
 function register() {
-    cropImg.result('blob').then(function (blob) {
+    const email = $('#email').val();
+    const name = $('#displayName').val();
+    const password = $('#password').val();
+    const repassword = $('#rePassword').val();
 
-        const formData = new FormData();
-        formData.append("email", $('#email').val());
-        formData.append("displayName", $('#displayName').val());
-        formData.append("password", $('#password').val());
-        formData.append("avatarImage", blob);
+    if (password === "" || repassword === "") {
+        M.toast({html: 'Insert your new password', classes: 'red'});
+    } else if (password !== repassword) {
+        M.toast({html: 'Passwords must match', classes: 'red'});
+    } else if (password.length < 8) {
+        M.toast({html: 'Password is too short (min. 8 characters)', classes: 'red'});
+    } else {
+        getFinalImage(croppieObj, (image) => {
+            const formData = new FormData();
+            formData.append("email", email);
+            formData.append("displayName", name);
+            formData.append("password", password);
+            formData.append("avatarImage", image);
 
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', "/signUp", true);
-        xhr.onload = function (e) {
-            switch (xhr.status) {
-                case 200:
-                case 201:
-                    M.toast({html: 'User created', classes: 'green'});
-                    setTimeout(() => {window.location.replace("./login")}, 2000);
-                    break;
-                case 409:
-                    M.toast({html: 'Already exist a user with this email', classes: 'red'});
-                    break;
-                default:
-                    M.toast({html: 'There was a error with your request', classes: 'red'});
-                    break;
-            }
+            requestXhr('POST', "/signUp", formData, (res) => {
+                M.toast({html: 'User created', classes: 'green'});
+                delayedRedirect('./login');
+            });
 
-        };
-        xhr.send(formData);
-        return false;
-    });
+            return false;
+        });
+    }
 }
 

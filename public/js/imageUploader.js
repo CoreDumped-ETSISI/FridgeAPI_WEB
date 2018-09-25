@@ -72,7 +72,7 @@ function requestXhr(method, path, data, next) {
                 break;
             default:
                 let msg = xhr.response.message;
-                M.toast({html: (msg)?msg:'Something go wrong with the upload', classes: "red"});
+                M.toast({html: (msg)?msg:'Something went wrong with the request', classes: "red"});
                 break;
         }
 

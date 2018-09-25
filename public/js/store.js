@@ -1,4 +1,3 @@
-let user;
 let productList;
 
 let cart = [];
@@ -8,19 +7,7 @@ initPage();
 
 function initPage() {
     getProductList();
-    getProfile();
     listIsEmpty();
-}
-
-function getProfile() {
-    request('GET', '/user', null, (res) => {
-        user = res;
-        if (user.avatarImage)
-            cleanAndAppend("#photo", '<img class="responsive-img circle" src="' + user.avatarImage + '">');
-        cleanAndAppend(".name", user.displayName);
-        cleanAndAppend(".email", user.email);
-        cleanAndAppend("#saldo", (Math.round(user.balance * 100) / 100) + ' €');
-    });
 }
 
 function getProductList() {
@@ -32,16 +19,9 @@ function getProductList() {
     });
 }
 
-function deleteCredentials() {
-    request('GET', '/logout', null, (res) => {
-        redirect("/login");
-    })
-}
-
 function createProductCards() {
     const products = $("#products");
     products.empty();
-    console.log(productList);
 
     for (let i = 0; i < productList.length; i++) {
         products.append(productCard(productList[i]));
@@ -70,7 +50,6 @@ function addToCart(id) {
         let product = productList.filter((elem) => {
             return elem._id === id;
         })[0];
-        console.log(product);
         cart.push(product);
         updateStock(id, -1);
 

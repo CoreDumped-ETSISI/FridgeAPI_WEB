@@ -5,15 +5,42 @@ block content
         nav.header(role='navigation')
             .nav-wrapper.container.center
                 img.logo-header(src='/images/logo.png')
+
+    #userModal.modal(style="width: 50% !important;")
+        .modal-content
+            form
+                h4 Edit your user profile
+
+                .row.input-field
+                    .col.s12.l6
+                        img#userImage.circle.responsive-img.col.s12.m10.offset-m1(src="/images/default-product-image.jpg" style="object-fit: cover; margin-top: 15px;")
+                        input#fileElem(type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'userImage')")
+                    .col.s12.l6
+                        .row
+                            .input-field.col.s12
+                                input#user_name.validate(type="text")
+                                label(for="user_name") Name
+                        .row
+                            .input-field.col.s12
+                                input#user_pass.validate(type="text")
+                                label(for="user_pass") Password
+                        .row
+                            .input-field.col.s12
+                                input#user_repass.validate(type="text")
+                                label(for="user_repass") Repeat password
+                        .modal-footer.row
+                            .col.s6
+                                a.btn.modal-action.waves-effect.waves-green.white-text(href="#!" onclick="saveUser()" ) Save
+                            .col.s6
+                                a.btn.red.modal-action.modal-close.waves-effect.waves-red.white-text(href="#!") Cancel
+
     ul#slide-out.sidenav.sidenav-fixed.oscuro.texto-claro
         li
             .user-view.oscuro
                 .background
-                a#photo(href='#!user')
-                a(href='#!name')
-                    span.white-text.name
-                a(href='#!email')
-                    span.white-text.email
+                a#photo.modal-trigger(href="#userModal")
+                span.white-text.name
+                span.white-text.email
                 span.white-text.saldo-position.roboto-mono
                     | Saldo:
                     span#saldo.white-text
@@ -38,3 +65,7 @@ block content
                 i.material-icons menu
 
 block scripts
+    script(src='/js/croppie/croppie.js')
+    script(src='/js/imageUploader.js')
+    script(src='/js/navbar_main.js')
+    block nav_scripts

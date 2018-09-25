@@ -1,5 +1,4 @@
-
-$(document).ready(function(){
+$(document).ready(function () {
     $('.modal').modal();
     $('.fixed-action-btn').floatingActionButton();
     $('.sidenav').sidenav();
@@ -33,15 +32,22 @@ function request(method, path, data, next) {
     });
 }
 
+function reload(delay) {
+    if (!delay)
+        window.location.reload();
+    else
+        setTimeout(() => window.location.reload(), delay);
+}
+
 function redirect(path) {
     window.location.replace(path);
 }
 
-function delayedRedirect(path, time) {
-    window.setTimeout(window.location.replace(path), time);
+function delayedRedirect(path, delay) {
+    setTimeout(() => window.location.replace(path), delay);
 }
 
-function cleanAndAppend(where, what){
+function cleanAndAppend(where, what) {
     $(where).empty();
     $(where).append(what);
 }

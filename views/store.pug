@@ -2,25 +2,20 @@ extends navbar_layout
 
 block navbar-content
     li
-        // Cart chartList
         #cartList.center
             span#empty
     li
-        // TOTAL
         .center.precio-total.roboto-mono
             span.p TOTAL:
             span#total(style='padding-left: 0.2em;')
-        // BOTON DE LA COMPRA
         .action-btn.sidebar-margins
             a.waves-effect.waves-light.btn.sidebar-button(href='#' onclick='purchase()')
                 i.material-icons local_grocery_store
 
 block main-content
     .products-section
-
         #products.row
             span(style='text-align: center;') &iexcl;Tesorero, arregla la pu&ntilde;etera API!
 
-
-block scripts
+block nav_scripts
     script(src="js/store.js")

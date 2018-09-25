@@ -62,7 +62,6 @@ function updateProduct(req, res) {
         if (!input.validProductName(name)) return res.sendStatus(400);
         updatedFields.name = name;
     }
-    if (req.file) updatedFields.image = req.file.filename;
 
     if (stock) {
         if (!input.validInt(stock)) return res.sendStatus(400);

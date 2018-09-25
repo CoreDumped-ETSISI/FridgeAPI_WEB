@@ -23,27 +23,28 @@ function signUp(req, res) {
     if (!input.validName(displayName)) return res.status(400).send({message: 'Name not valid'});
 
     let ext = image.obtainExt(req.file);
-    if (!ext) return res.status(400).send({message: 'Image not valid'});
+    if (!ext) return res.status(400).send({message: 'Invalid image'});
     let imageName = '';
     const numPasses = 6;
-    for(let c = 0; c < numPasses; c++){
+    for (let c = 0; c < numPasses; c++) {
         imageName += Math.random().toString(36).substring(2, 15);
     }
     imageName += ext;
+    const imagePath = path.join(config.USER_IMAGES_PATH, imageName);
 
     User.findOne({email: email})
         .exec((err, userExist) => {
-            if (err) return res.status(500).send({ message: 'Internal error'});
-            if (userExist) return res.status(409).send({ message: 'Already exist a user with this email'});
+            if (err) return res.status(500).send({message: 'Internal error'});
+            if (userExist) return res.status(409).send({message: 'Already exist a user with this email'});
 
             crypto.randomBytes(20, (err, token) => {
-                if (err) return res.status(500).send({ message: 'Internal error'});
-                if (!token) return res.status(500).send({ message: 'Internal error'});
+                if (err) return res.status(500).send({message: 'Internal error'});
+                if (!token) return res.status(500).send({message: 'Internal error'});
                 const expires = Date.now() + 3600000 * config.VERIFY_EMAIL_EXP;
                 const user = new User({
                     email: email,
                     displayName: displayName,
-                    avatarImage: config.USER_IMAGES_PATH + imageName,
+                    avatarImage: imagePath,
                     password: password,
                     status: "Created",
                     balance: 0,
@@ -51,11 +52,10 @@ function signUp(req, res) {
                     verifyEmailExpires: expires
                 });
                 user.save((err, user) => {
-                    if (err) return res.status(500).send({ message: 'Internal error'});
-                    if (!user) return res.status(500).send({ message: 'Internal error'});
+                    if (err) return res.status(500).send({message: 'Internal error'});
+                    if (!user) return res.status(500).send({message: 'Internal error'});
                     mail.sendWelcomeEmail(user.email, user.displayName, user.verifyEmailToken);
 
-                    const imagePath = path.join(config.USER_IMAGES_PATH, imageName);
                     image.saveToDisk(req.file, imagePath, null);
 
                     return res.status(200).send({message: 'User created'});
@@ -68,21 +68,21 @@ function login(req, res) {
     const email = req.body.email;
     const password = req.body.password;
     const sessionOnly = req.body.sessionOnly; //TODO:
-    if (!input.validEmail(email)) return res.status(404).send({ message: 'Invalid email'});
-    if (!password) return res.status(404).send({ message: 'Password field is empty'});
+    if (!input.validEmail(email)) return res.status(404).send({message: 'Invalid email'});
+    if (!password) return res.status(404).send({message: 'Password field is empty'});
 
     User.findOne({email: email})
         .select('+password +admin')
         .exec((err, user) => {
-            if (err) return res.status(500).send({ message: 'Internal error'});
-            if (!user) return res.status(404).send({ message: 'Wrong email or password'});
+            if (err) return res.status(500).send({message: 'Internal error'});
+            if (!user) return res.status(404).send({message: 'Wrong email or password'});
 
             if (config.EMAIL_VERIFICATION && user.status !== 'Verified')
                 return res.status(401).send({message: 'Email verification required'});
 
             bcrypt.compare(password, user.password, (err, equals) => {
-                if (err) return res.status(500).send({ message: 'Internal error'});
-                if (!equals) return res.status(404).send({ message: 'Wrong email or password'});
+                if (err) return res.status(500).send({message: 'Internal error'});
+                if (!equals) return res.status(404).send({message: 'Wrong email or password'});
                 const token = tokenGen.generate(user);
                 res.cookie('token', token, {
                     maxAge: config.EXP_DAYS * 24 * 3600000,
@@ -104,32 +104,42 @@ function logout(req, res) {
 }
 
 function updateUserData(req, res) {
-    if (!req.body.displayName &&
-        !req.body.password)
+    const name = req.body.displayName;
+    const password = req.body.password;
+    const ext = image.obtainExt(req.file);
+
+    if (!name && !password && !ext)
         return res.status(400).send({message: 'Name or password required'});
 
     let updatedFields = {};
-    if (req.body.displayName) {
-        updatedFields.displayName = req.body.displayName;
-        if (!input.validName(updatedFields.displayName)) return res.status(400).send({message: 'Name not valid'});
+    if (name) {
+        if (!input.validName(name)) return res.status(400).send({message: 'Name not valid'});
+        updatedFields.displayName = name;
     }
-    //if(req.file)
-    //    updatedFields.avatarImage = config.USER_IMAGES_PATH + req.file.filename;
-    /*if (req.body.avatarImage) {
-        updatedFields.avatarImage = req.body.avatarImage;
-        if (!input.validURL(updatedFields.avatarImage)) return res.sendStatus(400)
-    }*/
-    if (req.body.password) {
-        updatedFields.password = req.body.password;
-        if (!input.validPassword(updatedFields.password)) return res.status(400).send({message: 'Password not valid'});
+    if (password) {
+        if (!input.validPassword(password)) return res.status(400).send({message: 'Password not valid'});
+        updatedFields.password = password;
+    }
+    if (ext) {
+        let imageName = '';
+        const numPasses = 6;
+        for (let c = 0; c < numPasses; c++) {
+            imageName += Math.random().toString(36).substring(2, 15);
+        }
+        imageName += ext;
+        updatedFields.avatarImage = path.join(config.USER_IMAGES_PATH + imageName);
     }
 
     User.findById(req.user, (err, user) => {
-        if (err) return res.status(500).send({ message: 'Internal error'});
-        if (!user) return res.status(404).send({ message: 'User not found'});
+        if (err) return res.status(500).send({message: 'Internal error'});
+        if (!user) return res.status(404).send({message: 'User not found'});
+
+        if (updatedFields.avatarImage)
+            image.saveToDisk(req.file, updatedFields.avatarImage, null);
+
         user.set(updatedFields);
         user.save((err) => {
-            if (err) return res.status(500).send({ message: 'Internal error'});
+            if (err) return res.status(500).send({message: 'Internal error'});
             return res.sendStatus(200)
         })
     })
@@ -139,8 +149,8 @@ function getUserData(req, res) {
     User.findById(req.user)
         .select("-_id")
         .exec((err, user) => {
-            if (err) return res.status(500).send({ message: 'Internal error'});
-            if (!user) return res.status(404).send({ message: 'User not found'});
+            if (err) return res.status(500).send({message: 'Internal error'});
+            if (!user) return res.status(404).send({message: 'User not found'});
             return res.status(200).send(user)
         })
 }
@@ -150,16 +160,16 @@ function getUser(req, res) {
     if (!input.validId(userId)) return res.status(400).send({message: 'Invalid user id'});
 
     User.findById(userId, (err, user) => {
-        if (err) return res.status(500).send({ message: 'Internal error'});
-        if (!user) return res.status(404).send({ message: 'User not found'});
+        if (err) return res.status(500).send({message: 'Internal error'});
+        if (!user) return res.status(404).send({message: 'User not found'});
         return res.status(200).send(user)
     })
 }
 
 function getUserList(req, res) {
     User.find({}, (err, users) => {
-        if (err) return res.status(500).send({ message: 'Internal error'});
-        if (!users) return res.status(404).send({ message: 'Users not found or empty list'});
+        if (err) return res.status(500).send({message: 'Internal error'});
+        if (!users) return res.status(404).send({message: 'Users not found or empty list'});
         res.status(200).send(users)
     })
 }
@@ -170,10 +180,10 @@ function restorePassword(req, res) {
 
     User.findOne({email: email})
         .exec((err, user) => {
-            if (!user) return res.status(404).send({ message: 'User not found'});
+            if (!user) return res.status(404).send({message: 'User not found'});
             crypto.randomBytes(20, (err, token) => {
-                if (err) return res.status(500).send({ message: 'Internal error'});
-                if (!token) return res.status(500).send({ message: 'Internal error'});
+                if (err) return res.status(500).send({message: 'Internal error'});
+                if (!token) return res.status(500).send({message: 'Internal error'});
                 const expires = Date.now() + 3600000 * config.RESTORE_PASS_EXP;
                 user.resetPasswordToken = token.toString('hex');
                 user.resetPasswordExpires = expires;
@@ -196,8 +206,8 @@ function resetPasswordPost(req, res) {
     User.findOne({email: email})
         .select('+password +resetPasswordExpires +resetPasswordToken')
         .exec((err, user) => {
-            if (err) return res.status(500).send({ message: 'Internal error'});
-            if (!user) return res.status(404).send({ message: 'User not found'});
+            if (err) return res.status(500).send({message: 'Internal error'});
+            if (!user) return res.status(404).send({message: 'User not found'});
             if (!user.resetPasswordExpires ||
                 user.resetPasswordExpires < Date.now()) return res.status(410).send({message: 'Expired token'});
             if (!user.resetPasswordToken ||
@@ -207,7 +217,7 @@ function resetPasswordPost(req, res) {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
             user.save((err, user) => {
-                if (err) return res.status(500).send({ message: 'Internal error'});
+                if (err) return res.status(500).send({message: 'Internal error'});
                 return res.sendStatus(200)
             })
         })
@@ -218,8 +228,8 @@ function deleteUser(req, res) {
     if (!input.validId(userId)) return res.status(400).send({message: 'Invalid user id'});
 
     User.findById(userId, (err, user) => {
-        if (err) return res.status(500).send({ message: 'Internal error'});
-        if (!user) return res.status(404).send({ message: 'User not found'});
+        if (err) return res.status(500).send({message: 'Internal error'});
+        if (!user) return res.status(404).send({message: 'User not found'});
         user.remove();
         return res.sendStatus(200)
     })
@@ -232,8 +242,8 @@ function setUserStatus(req, res) {   //TODO: Change this by a email validation
     if (!input.validStatus(status)) return res.status(400).send({message: 'Invalid status'});
 
     User.findById(userId, (err, user) => {
-        if (err) return res.status(500).send({ message: 'Internal error'});
-        if (!user) return res.status(404).send({ message: 'User not found'});
+        if (err) return res.status(500).send({message: 'Internal error'});
+        if (!user) return res.status(404).send({message: 'User not found'});
         user.set({status: status});
         user.save((err, userStored) => {
             return res.sendStatus(200)
@@ -249,19 +259,19 @@ function verifyEmail(req, res) {
     User.findOne({email: email})
         .select('+verifyEmailToken +verifyEmailExpires')
         .exec((err, user) => {
-            if (err) return res.status(500).send({ message: 'Internal error'});
-            if (!user) return res.status(404).send({ message: 'User not found'});
-            if (user.status === 'Verified') return res.status(410).send({ message: 'User already verified'});
+            if (err) return res.status(500).send({message: 'Internal error'});
+            if (!user) return res.status(404).send({message: 'User not found'});
+            if (user.status === 'Verified') return res.status(410).send({message: 'User already verified'});
             if (!user.verifyEmailExpires ||
-                user.verifyEmailExpires < Date.now()) return res.status(410).send({ message: 'Expired token'});
+                user.verifyEmailExpires < Date.now()) return res.status(410).send({message: 'Expired token'});
             if (!user.verifyEmailToken ||
-                user.verifyEmailToken !== token) return res.status(401).send({ message: 'Invalid token'});
+                user.verifyEmailToken !== token) return res.status(401).send({message: 'Invalid token'});
 
             user.status = 'Verified';
             user.verifyEmailToken = undefined;
             user.verifyEmailExpires = undefined;
             user.save((err, user) => {
-                if (err) return res.status(500).send({ message: 'Internal error'});
+                if (err) return res.status(500).send({message: 'Internal error'});
                 return res.status(200).send({
                     message: 'User verified'
                 })

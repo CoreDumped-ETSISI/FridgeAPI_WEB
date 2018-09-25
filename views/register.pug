@@ -5,7 +5,7 @@ block main-content
         form.login-form
             .row(style='margin-bottom: 0.5em')
                 img#avatarImage.circle.responsive-img.col.s10.offset-s1.m6.offset-m3.l8.offset-l2(src="/images/avatar.png" style="object-fit: cover; padding: 30px;")
-                input#fileElem(type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files)")
+                input#fileElem(type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'avatarImage')")
             .row(style='margin-bottom: 0em')
                 .input-field.col.s12
                     input#email.validate(type='email')
@@ -28,4 +28,5 @@ block main-content
 
 block scripts
     script(src='/js/croppie/croppie.js')
+    script(src='/js/imageUploader.js')
     script(src='/js/register.js')
