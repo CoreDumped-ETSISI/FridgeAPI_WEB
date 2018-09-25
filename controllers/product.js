@@ -48,11 +48,13 @@ function updateProduct(req, res) {
     const price = req.body.price;
     const stock = req.body.stock;
     const units = req.body.units;
+    const ext = image.obtainExt(req.file);
 
     if (!name &&
         !price &&
         !units &&
-        !stock)
+        !stock &&
+        !ext)
         return res.sendStatus(400);
 
     let updatedFields = {};
@@ -61,11 +63,6 @@ function updateProduct(req, res) {
         updatedFields.name = name;
     }
     if (req.file) updatedFields.image = req.file.filename;
-
-    /*if (image) {
-        updatedFields.image = image;
-        if (!input.validURL(updatedFields.image)) return res.sendStatus(400)
-    }*/
 
     if (stock) {
         if (!input.validInt(stock)) return res.sendStatus(400)
@@ -84,8 +81,16 @@ function updateProduct(req, res) {
         .exec((err, product) => {
             if (err) return res.sendStatus(500);
             if (!product || product.length === 0) return res.sendStatus(404);
-            console.log(product);
-            console.log(updatedFields);
+
+            let imagePath = null;
+            if(ext){
+                if(updatedFields.name)
+                    imagePath = path.join(config.PRODUCTS_IMAGES_PATH, updatedFields.name + ext);
+                else
+                    imagePath = path.join(config.PRODUCTS_IMAGES_PATH, product.name + ext);
+                updatedFields.image = imagePath;
+                image.saveToDisk(req.file, imagePath, null);
+            }
 
             product.set(updatedFields);
             product.save((err, productStored) => {
