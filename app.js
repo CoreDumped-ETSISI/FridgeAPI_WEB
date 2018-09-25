@@ -16,7 +16,6 @@ const productRoutes = require('./routes/productRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const purchaseRoutes = require('./routes/purchaseRoutes');
 const userRoutes = require('./routes/userRoutes');
-const utilRoutes = require('./routes/utilityRoutes');
 
 const app = express();
 
@@ -47,7 +46,6 @@ app.use('/product', productRoutes);
 app.use('/payment', paymentRoutes);
 app.use('/purchase', purchaseRoutes);
 app.use('/user', userRoutes);
-app.use('/util', utilRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

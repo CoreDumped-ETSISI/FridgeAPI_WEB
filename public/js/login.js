@@ -1,3 +1,9 @@
+
+M.toast({
+    html: "This is a beta vesion, if you see a bug, please report it to our github&ensp;<a href='https://github.com/CoreDumped-ETSISI/FridgeAPI_WEB/issues'> Github</a>",
+    classes: 'orange'
+});
+
 function login() {
     const email = $('#email').val();
     const password = $('#password').val();

@@ -4,8 +4,6 @@ const token = require('../services/token');
 const User = require('../models/user');
 const config = require('../config');
 
-
-
 function isAuth(req, res, next) {
     if (req.cookies && req.cookies.token) {
         req.headers.authorization = "Bearer " + req.cookies.token;
