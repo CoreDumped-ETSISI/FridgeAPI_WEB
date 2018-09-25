@@ -1,6 +1,6 @@
 'use strict';
 
-const multer  = require('multer');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const config = require('../config');
@@ -20,11 +20,11 @@ function imageFormat(file) {
     if (file.buffer.length > config.MAX_MB_IMAGE_SIZE * 1024 * 1024) return false;
     let ext = '';
     const magic = file.buffer.toString('hex', 0, 4);
-    if(magic === MAGIC_NUMBERS.png){
+    if (magic === MAGIC_NUMBERS.png) {
         ext = '.png';
-    } else if(magic === MAGIC_NUMBERS.jpg1 || magic === MAGIC_NUMBERS.jpg2 || magic === MAGIC_NUMBERS.jpg3){
+    } else if (magic === MAGIC_NUMBERS.jpg1 || magic === MAGIC_NUMBERS.jpg2 || magic === MAGIC_NUMBERS.jpg3) {
         ext = '.jpg';
-    } else if(ext === '.gif' && magic === MAGIC_NUMBERS.gif){
+    } else if (ext === '.gif' && magic === MAGIC_NUMBERS.gif) {
         ext = '.gif';
     } else return false;
     return ext;
@@ -35,21 +35,21 @@ function saveToDisk(file, imagePath, next) {
     fs.writeFile(imagePath, file.buffer, 'binary', next);
 }
 
-function convertToValidName(imageName){
+function convertToValidName(imageName) {
     let newName = imageName;
-    newName.replace(/ /g,"_");
-    newName.replace('/ñ/g','n');
-    newName.replace('/á/g','a');
-    newName.replace('/é/g','e');
-    newName.replace('/í/g','i');
-    newName.replace('/ó/g','o');
-    newName.replace('/ú/g','u');
+    newName = newName.replace(/ /g, '_');
+    newName = newName.replace(/ñ/gi, 'n');
+    newName = newName.replace(/á/gi, 'a');
+    newName = newName.replace(/é/gi, 'e');
+    newName = newName.replace(/í/gi, 'i');
+    newName = newName.replace(/ó/gi, 'o');
+    newName = newName.replace(/ú/gi, 'u');
     return encodeURIComponent(newName);
 }
 
 module.exports = {
-    userImage: multer({ storage: storage }),
-    productImage: multer({ storage: storage }),
+    userImage: multer({storage: storage}),
+    productImage: multer({storage: storage}),
     saveToDisk: saveToDisk,
     obtainExt: imageFormat,
     convertToValidName: convertToValidName
