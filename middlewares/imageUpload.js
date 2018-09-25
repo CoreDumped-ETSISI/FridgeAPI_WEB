@@ -35,9 +35,22 @@ function saveToDisk(file, imagePath, next) {
     fs.writeFile(imagePath, file.buffer, 'binary', next);
 }
 
+function convertToValidName(imageName){
+    let newName = imageName;
+    newName.replace(' ','_');
+    newName.replace('ñ','n');
+    newName.replace('á','a');
+    newName.replace('é','e');
+    newName.replace('í','i');
+    newName.replace('ó','o');
+    newName.replace('ú','u');
+    return encodeURIComponent(newName);
+}
+
 module.exports = {
     userImage: multer({ storage: storage }),
     productImage: multer({ storage: storage }),
     saveToDisk: saveToDisk,
-    obtainExt: imageFormat
+    obtainExt: imageFormat,
+    convertToValidName: convertToValidName
 };

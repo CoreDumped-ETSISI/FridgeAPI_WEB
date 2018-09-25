@@ -59,13 +59,13 @@ function updateProduct(req, res) {
 
     let updatedFields = {};
     if (name) {
-        if (!input.validProductName(name)) return res.sendStatus(400)
+        if (!input.validProductName(name)) return res.sendStatus(400);
         updatedFields.name = name;
     }
     if (req.file) updatedFields.image = req.file.filename;
 
     if (stock) {
-        if (!input.validInt(stock)) return res.sendStatus(400)
+        if (!input.validInt(stock)) return res.sendStatus(400);
         updatedFields.stock = stock;
     }
 
@@ -85,13 +85,12 @@ function updateProduct(req, res) {
             let imagePath = null;
             if(ext){
                 if(updatedFields.name)
-                    imagePath = path.join(config.PRODUCTS_IMAGES_PATH, updatedFields.name + ext);
+                    imagePath = path.join(config.PRODUCTS_IMAGES_PATH, image.convertToValidName(updatedFields.name) + ext);
                 else
-                    imagePath = path.join(config.PRODUCTS_IMAGES_PATH, product.name + ext);
+                    imagePath = path.join(config.PRODUCTS_IMAGES_PATH, image.convertToValidName(product.name) + ext);
                 updatedFields.image = imagePath;
                 image.saveToDisk(req.file, imagePath, null);
             }
-
             product.set(updatedFields);
             product.save((err, productStored) => {
                 if (err) return res.sendStatus(500);
@@ -111,7 +110,7 @@ function saveProduct(req, res) {
         !input.validInt(stock))
         return res.sendStatus(400);
 
-    const imagePath = path.join(config.PRODUCTS_IMAGES_PATH, name + ext);
+    const imagePath = path.join(config.PRODUCTS_IMAGES_PATH, image.convertToValidName(name) + ext);
 
     Product.findOne({name: name}, (err, productExist) => {
         if (err) return res.sendStatus(500);
