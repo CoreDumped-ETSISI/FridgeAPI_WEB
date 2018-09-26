@@ -90,7 +90,7 @@ function eraseCartElement(id, index) {
 function updateStock(productId, quantity) {
     let productStock = $('#' + productId).find('.badge');
     let stock = parseInt(productStock.text());
-    if (stock > 0)
+    if (stock >= 0)
         productStock.text(stock + quantity);
 }
 
