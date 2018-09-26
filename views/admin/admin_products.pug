@@ -1,32 +1,26 @@
-extends ../layout
+extends ../header_layout
 
-block content
-    header
-        nav.header.full-width(role='navigation')
-            .nav-wrapper.container.center
-                a(href="./")
-                    img.logo-header(src='/images/logo.png')
-    main#login-page.row.valign-wrapper(style='min-width: 100%; padding: 0em 2em 0em 2em; margin-bottom: 0em')
-        .col.s12.m8.offset-m2.l4.offset-l4.z-depth-4.card-panel(style='padding: 2em')
-            form.login-form
-                .row(style='margin-bottom: 0.5em')
-                    img#productImage.circle.responsive-img.col.s10.offset-s1.m6.offset-m3.l8.offset-l2(src="/images/default-product-image.jpg" style="object-fit: cover; padding: 0;")
-                    input#fileElem(type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'productImage')")
-                .row(style='margin-bottom: 0em')
-                    .input-field.col.s12
-                        input#productName(type='text')
-                        label(for='productName' data-error='wrong' data-success='right') Name
-                .row(style='margin-bottom: 0.5em')
-                    .input-field.col.s12
-                        input#stock(type='number')
-                        label(for='stock') Stock
-                .row(style='margin-bottom: 0.5em')
-                    .input-field.col.s12
-                        input#marketPrice(type='number')
-                        label(for='marketPrice') Price
-                .row
-                    .input-field.col.s12
-                        a.btn.light-green.accent-4.waves-effect.waves-light.white-text.col.s12(href='#' onclick='addProduct()') Send
+block main-content
+    .col.s12.m8.offset-m2.l4.offset-l4.z-depth-4.card-panel(style='padding: 2em')
+        form.login-form
+            .row(style='margin-bottom: 0.5em')
+                img#productImage.circle.responsive-img.col.s10.offset-s1.m6.offset-m3.l8.offset-l2(src="/images/default-product-image.jpg" style="object-fit: cover; padding: 0;")
+                input#fileElem(type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'productImage')")
+            .row(style='margin-bottom: 0em')
+                .input-field.col.s12
+                    input#productName(type='text')
+                    label(for='productName' data-error='wrong' data-success='right') Name
+            .row(style='margin-bottom: 0.5em')
+                .input-field.col.s12
+                    input#stock(type='number')
+                    label(for='stock') Stock
+            .row(style='margin-bottom: 0.5em')
+                .input-field.col.s12
+                    input#marketPrice(type='number')
+                    label(for='marketPrice') Price
+            .row
+                .input-field.col.s12
+                    a.btn.light-green.accent-4.waves-effect.waves-light.white-text.col.s12(href='#' onclick='addProduct()') Send
 
 block scripts
     script(src='/js/croppie/croppie.js')

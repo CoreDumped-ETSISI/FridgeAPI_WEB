@@ -1,24 +1,18 @@
-extends ../layout
+extends ../header_layout
 
-block content
-    header
-        nav.header.full-width(role='navigation')
-            .nav-wrapper.container.center
-                a(href="./")
-                    img.logo-header(src='/images/logo.png')
-    main#login-page.row.valign-wrapper(style='min-width: 100%; padding: 0em 2em 0em 2em; margin-bottom: 0em')
-        .col.s12.m8.offset-m2.l4.offset-l4.z-depth-4.card-panel(style='padding: 2em')
-            .row
-                .input-field.col.s12
-                    a.btn.amber.darken-1.waves-effect.waves-light.white-text.col.s12(href='/admin/add-new-product' ) Add products
-            .row
-                .input-field.col.s12
-                    a.btn.cyan.darken-2.waves-effect.waves-light.white-text.col.s12(href='/admin/update-product' ) Update products
-            .row
-                .input-field.col.s12
-                    a.btn.red.waves-effect.waves-light.white-text.col.s12(href='/admin/add-payment' ) Make a payment
-            .row
-                .input-field.col.s12
-                    a.btn.green.accent-4.waves-effect.waves-light.white-text.col.s12(href='/admin/user-list' ) Users list
+block main-content
+    .col.s12.m8.offset-m2.l4.offset-l4.z-depth-4.card-panel(style='padding: 2em')
+        .row
+            .input-field.col.s12
+                a.btn.amber.darken-1.waves-effect.waves-light.white-text.col.s12(href='/admin/add-new-product' ) Add products
+        .row
+            .input-field.col.s12
+                a.btn.cyan.darken-2.waves-effect.waves-light.white-text.col.s12(href='/admin/update-product' ) Update products
+        .row
+            .input-field.col.s12
+                a.btn.red.waves-effect.waves-light.white-text.col.s12(href='/admin/add-payment' ) Make a payment
+        .row
+            .input-field.col.s12
+                a.btn.green.accent-4.waves-effect.waves-light.white-text.col.s12(href='/admin/user-list' ) Users list
 
 block scripts
