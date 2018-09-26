@@ -34,8 +34,8 @@ function purchaseElement(purchase) {
             '<td><img  class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
             '<td>' + product.name + '</td>' +
             '<td>' + product.quantity + '</td>' +
-            '<td>' + product.price + ' €</td>' +
-            '<td>' + product.price * product.quantity + ' €</td>' +
+            '<td>' + product.price.toFixed(2) + ' €</td>' +
+            '<td>' + (product.price * product.quantity).toFixed(2) + ' €</td>' +
             '</tr>'
     }
 
