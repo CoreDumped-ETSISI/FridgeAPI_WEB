@@ -4,7 +4,12 @@ let croppieObj;
 initFileInput('avatarImage', 'fileElem');
 
 function handleFiles(files, id) {
-    handleImages(files, id, null, (file, croppieInstance) => {
+    const config = {
+        viewport: {width: 256, height: 256, type: 'circle'},
+        boundary: {width: 300, height: 300},
+        showZoomer: false
+    };
+    handleImages(files, id, config, (file, croppieInstance) => {
         if(!file) M.toast({html: 'Invalid image', classes: 'red'});
         croppieObj = croppieInstance;
     })
