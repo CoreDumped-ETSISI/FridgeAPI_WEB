@@ -21,10 +21,9 @@ function getProfile() {
 
 function handleFiles(files, id) {
     const config = {
-        viewport: {width: 256, height: 256},
+        viewport: {width: 256, height: 256, type: 'circle'},
         boundary: {width: 300, height: 300},
-        showZoomer: false,
-        type: 'circle'
+        showZoomer: false
     };
     handleImages(files, id, config, (file, croppieInstance) => {
         if (!file) M.toast({html: 'Invalid image', classes: 'red'});
