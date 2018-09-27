@@ -27,7 +27,8 @@ function request(method, path, data, next) {
             message: textStatus,
             error: errorThrown
         };
-        if (err.code === 401) redirect('/login');
+        console.log(window.location.href.indexOf('login'));
+        if (err.code === 401 && window.location.href.indexOf('login') === -1) redirect('/login');
         M.toast({html: err.res.message, classes: "red"});
     });
 }
