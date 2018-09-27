@@ -31,6 +31,7 @@ function imageFormat(file) {
 }
 
 function saveToDisk(file, imagePath, next) {
+    if(!next) next = () => {};
     imagePath = path.join('./public', imagePath);
     fs.writeFile(imagePath, file.buffer, 'binary', next);
 }
