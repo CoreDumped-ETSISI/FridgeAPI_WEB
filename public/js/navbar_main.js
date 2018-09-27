@@ -26,7 +26,7 @@ function handleFiles(files, id) {
         showZoomer: false,
         type: 'circle'
     };
-    handleImages(files, id, null, (file, croppieInstance) => {
+    handleImages(files, id, config, (file, croppieInstance) => {
         if (!file) M.toast({html: 'Invalid image', classes: 'red'});
         croppieObj = croppieInstance;
     })
