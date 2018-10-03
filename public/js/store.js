@@ -120,7 +120,7 @@ function purchase() {
             request('POST', '/purchase', data, (res) => {
                 cart = [];
                 reloadCart();
-                getProfile();
+                user = getProfile();
                 getProductList();
                 M.toast({html: 'Su compra se ha realizado correctamente', classes: 'green'});
             });

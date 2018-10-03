@@ -1,23 +1,8 @@
 let croppieObj;
 
-let user;
+let user = getProfile();
 
 initFileInput('userImage', 'fileElem');
-
-getProfile();
-
-function getProfile() {
-    request('GET', '/user', null, (res) => {
-        user = res;
-        if (user.avatarImage) {
-            cleanAndAppend("#photo", '<img class="responsive-img circle" src="' + user.avatarImage + '">');
-            $("#userImage").attr("src", user.avatarImage);
-        }
-        cleanAndAppend(".name", user.displayName);
-        cleanAndAppend(".email", user.email);
-        cleanAndAppend("#saldo", (Math.round(user.balance * 100) / 100) + ' €');
-    });
-}
 
 function handleFiles(files, id) {
     const config = {
