@@ -9,7 +9,7 @@ const UserSchema = new Schema({
     displayName: {type: String, required: true},
     avatarImage: String,
     password: {type: String, select: false, required: true},
-    signUpDate: {type: Date, default: Date.now()},
+    signUpDate: {type: Date, default: Date.now},
     lastLogin: Date,
     admin: {type: String, select: false},
     status: {type: String, enum: ['Created', 'Verified', 'Blocked', 'Deleted']},
