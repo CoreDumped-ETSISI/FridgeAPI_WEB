@@ -1,5 +1,4 @@
-
-function initFileInput(fileSelectableId, fileButtonId){
+function initFileInput(fileSelectableId, fileButtonId) {
     const fileSelect = $("#" + fileSelectableId);
     const fileElem = $("#" + fileButtonId);
     fileSelect.click(function () {
@@ -43,13 +42,13 @@ function handleImages(files, idElem, config, next) {
             boundary: {width: 300, height: 300},
             showZoomer: false
         } : config;
-        cropImg = new Croppie(el,conf);
+        cropImg = new Croppie(el, conf);
         next(imageFile, cropImg);
     }, 100);
 }
 
-function getFinalImage(croppieObj, next){
-    if(croppieObj){
+function getFinalImage(croppieObj, next) {
+    if (croppieObj) {
         croppieObj.result('blob').then((blob) => {
             next(blob);
         })
@@ -71,8 +70,9 @@ function requestXhr(method, path, data, next) {
                 redirect('/login');
                 break;
             default:
-                let msg = xhr.response.message;
-                M.toast({html: (msg)?msg:'Something went wrong with the request', classes: "red"});
+                let msg = JSON.parse(xhr.response).message;
+                console.log("msg" + msg);
+                M.toast({html: (msg) ? msg : 'Something went wrong with the request', classes: "red"});
                 break;
         }
 
