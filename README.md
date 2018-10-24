@@ -2,7 +2,7 @@
 
 [![Dependencies Status][npm-image]][npm-url]
 
-A RESTful API with web for management in the [CoreDumped](http://coredumped.es/) association.
+A RESTful API with web for the "Fridge Store" management in the [CoreDumped](http://coredumped.es/) association.
 
 ## Install
 
