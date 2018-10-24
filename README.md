@@ -2,11 +2,11 @@
 
 [![Dependencies Status][npm-image]][npm-url]
 
-A RESTful API with web for management in the [Coredumped](http://coredumped.es/) association.
+A RESTful API with web for management in the [CoreDumped](http://coredumped.es/) association.
 
 ## Install
 
-```bash
+```
 git clone https://github.com/CoreDumped-ETSISI/FridgeAPI_WEB.git
 cd FridgeAPI_WEB
 npm install
