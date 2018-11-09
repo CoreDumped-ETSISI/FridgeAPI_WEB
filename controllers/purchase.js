@@ -90,6 +90,7 @@ function getLastPurchases(req, res) {
     Purchase.find({})
         .sort({timestamp: -1})
         .limit(10)
+        .populate('userId')
         .exec(function (err, purchases) {
             if (err) return res.sendStatus(500);
             return res.status(200).send(purchases)
