@@ -93,7 +93,13 @@ function getLastPurchases(req, res) {
         .populate('userId')
         .exec(function (err, purchases) {
             if (err) return res.sendStatus(500);
-            return res.status(200).send(purchases)
+            let finalPurchases = purchases.map(purchase => {
+                purchase.userId.balance = undefined;
+                purchase.userId.status = undefined;
+                purchase.userId.signUpDate = undefined;
+                return purchase;
+            });
+            return res.status(200).send(finalPurchases)
         })
 }
 
