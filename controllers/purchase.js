@@ -94,6 +94,7 @@ function getLastPurchases(req, res) {
         .exec(function (err, purchases) {
             if (err) return res.sendStatus(500);
             let finalPurchases = purchases.map(purchase => {
+                purchase.userId.email = undefined;
                 purchase.userId.balance = undefined;
                 purchase.userId.status = undefined;
                 purchase.userId.signUpDate = undefined;
