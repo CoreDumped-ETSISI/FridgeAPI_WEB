@@ -33,7 +33,7 @@ function purchaseElement(purchase) {
     const datetime = new Date(purchase.timestamp).toLocaleString('es-ES');
 
     let temp = '<li class="collapsible-container">' +
-        '<div class="collapsible-header"><img class="circle" width="250" style="width:48px;" onClick="expandAll();" src="' + purchase.userId.avatarImage + '"/><p style="padding-left: 10px;"><b>' + purchase.userId.email + '</b> ' + datetime + ' Amount: ' + purchase.amount.toFixed(2) + ' € </p></div>' +
+        '<div class="collapsible-header"><img class="circle" width="48" style="width:48px; height: 48px;" src="' + purchase.userId.avatarImage + '"/><p style="padding-left: 10px;"><b>' + purchase.userId.email + '</b> ' + datetime + ' Amount: ' + purchase.amount.toFixed(2) + ' € </p></div>' +
         '<div class="collapsible-body">' +
         '<table><thead><tr>' +
         '<td></td>' +
