@@ -1,5 +1,9 @@
 initPage();
 
+$(document).ready(function () {
+    $('.collapsible').collapsible();
+});
+
 function initPage() {
     getPaymentList();
 }

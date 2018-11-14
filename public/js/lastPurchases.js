@@ -1,13 +1,30 @@
+let instance;
+
+let lastPurchasesList;
+
 initPage();
 
 function initPage() {
+
+    let elem = document.querySelector('.collapsible.expandable');
+    instance = M.Collapsible.init(elem, {
+        accordion: false
+    });
+
     getLastPurchasesList();
+    setInterval(getLastPurchasesList, 2000);
 }
 
 function getLastPurchasesList() {
-    request('GET', '/recents', null, (res) => {
-        for (let i = 0; i < res.length; i++) {
-            $("#purchaseList").append(purchaseElement(res[i]));
+    request('GET', 'purchase/recents', null, (res) => {
+        if(!lastPurchasesList || !lastPurchasesList[0] || res[0]._id !== lastPurchasesList[0]._id) {
+            lastPurchasesList = res;
+            let purchaseList = $("#purchaseList");
+            purchaseList.empty();
+            for (let i = 0; i < res.length; i++) {
+                purchaseList.append(purchaseElement(res[i]));
+                instance.open(i);
+            }
         }
     });
 }
@@ -15,8 +32,8 @@ function getLastPurchasesList() {
 function purchaseElement(purchase) {
     const datetime = new Date(purchase.timestamp).toLocaleString('es-ES');
 
-    let temp = '<li>' +
-        '<div class="collapsible-header"><i class="material-icons">shopping_cart</i>' + datetime + ' Amount: ' + purchase.amount.toFixed(2) + ' € <img src="' + purchase.userId.avatarImage + '"/></div>' +
+    let temp = '<li class="collapsible-container">' +
+        '<div class="collapsible-header"><img class="circle" width="250" style="width:48px;" onClick="expandAll();" src="' + purchase.userId.avatarImage + '"/><p style="padding-left: 10px;"><b>' + purchase.userId.email + '</b> ' + datetime + ' Amount: ' + purchase.amount.toFixed(2) + ' € </p></div>' +
         '<div class="collapsible-body">' +
         '<table><thead><tr>' +
         '<td></td>' +
