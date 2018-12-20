@@ -108,7 +108,7 @@ function reloadCartCost() {
 
 function purchase() {
     if (cart.length > 0) {
-        if ((Math.round(total * 100) / 100) <= (Math.round(user.balance * 100) / 100)) {
+        //if ((Math.round(total * 100) / 100) <= (Math.round(user.balance * 100) / 100)) {
             let itemChain = "";
 
             for (let i = 0; i < cart.length - 1; i++)
@@ -124,9 +124,9 @@ function purchase() {
                 getProductList();
                 M.toast({html: 'Su compra se ha realizado correctamente', classes: 'green'});
             });
-        } else {
+        /*} else {
             M.toast({html: 'No tienes saldo suficiente para efectuar la compra', classes: 'orange'});
-        }
+        }*/
     } else {
         M.toast({html: 'El carrito está vacío', classes: 'orange'});
     }
