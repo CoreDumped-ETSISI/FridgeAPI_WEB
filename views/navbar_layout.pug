@@ -5,7 +5,7 @@ block content
         nav.header(role='navigation')
             .nav-wrapper.container.center
                 a(href='/store')
-                    img.logo-header(src='/images/logo.png')
+                    img.logo-header(src='/images/logo.svg' style='padding:10px;')
 
     #userModal.modal(style="width: 50% !important;")
         .modal-content
@@ -35,25 +35,25 @@ block content
                             .col.s6
                                 a.btn.red.modal-action.modal-close.waves-effect.waves-red.white-text(href="#!") Cancel
 
-    ul#slide-out.sidenav.sidenav-fixed.oscuro.texto-claro
+    ul#slide-out.sidenav.sidenav-fixed.claro.texto-oscuro
         li
-            .user-view.oscuro
+            .user-view.claro
                 .background
                 a#photo.modal-trigger(href="#userModal")
-                span.white-text.name
-                span.white-text.email
-                span.white-text.saldo-position.roboto-mono
+                span.texto-oscuro.name
+                span.texto-oscuro.email
+                span.texto-oscuro.saldo-position.roboto-mono
                     | Saldo:
-                    span#saldo.white-text
+                    span#saldo.texto-oscuro
         block navbar-content
         li
             div(style='padding-top:25px;')
                 .action-btn.sidebar-margins
-                    a.waves-effect.waves-light.btn.sidebar-button.mas-oscuro.texto-verde-core(href='/store') Tienda
+                    a.waves-effect.waves-light.btn.sidebar-button.claro.texto-oscuro(href='/store') Tienda
                 .action-btn.sidebar-margins
-                    a.waves-effect.waves-light.btn.sidebar-button.mas-oscuro.texto-verde-core(href='/purchase-history') Historial de compras
+                    a.waves-effect.waves-light.btn.sidebar-button.claro.texto-oscuro(href='/purchase-history') Historial de compras
                 .action-btn.sidebar-margins
-                    a.waves-effect.waves-light.btn.sidebar-button.mas-oscuro.texto-verde-core(href='/payment-history') Historial de pagos
+                    a.waves-effect.waves-light.btn.sidebar-button.claro.texto-oscuro(href='/payment-history') Historial de pagos
             // Cerrar sesión
             .action-btn.sidebar-margins
                 a#logOut.waves-effect.waves-light.btn.sidebar-button(title='log out' onclick='deleteCredentials()')

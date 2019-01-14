@@ -33,7 +33,7 @@ function createProductCards() {
 
 function productCard(product) {
     return '<div class="col s6 m4 l3 xl2">' +
-        '<div class="card scale-transition waves-effect waves-light scale-out">' +
+        '<div class="card scale-transition waves-effect waves-green scale-out product-item">' +
         '<div id="' + product._id + '" class="card-image" onclick="addToCart(\'' + product._id + '\')">' +
         '<img src="' + product.image + '" />' +
         '<span class="card-title" id="product-name">' + product.name + '</span>' +

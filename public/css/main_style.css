@@ -47,8 +47,8 @@
 }
 
 .btn, .btn-large {
-    color: #262626;
-    background-color: #64dd17;
+    color: #104611;
+    background-color: #5fb030;
 }
 
 .btn:hover, .btn-large:hover {
@@ -58,7 +58,7 @@
 
 .btn:focus, .btn-large:focus {
     color: #1d1d1d;
-    background-color: white;
+    background-color: #dadada;
 }
 
 .sidebar-button {
@@ -74,7 +74,7 @@
 html, body {
     height: 100%;
     width: 100%;
-    background-color: #1d1d1d;
+    background-color: #f2f2f2;
 }
 
 body {
@@ -107,17 +107,26 @@ main {
 
 #logOut {
     margin-top: 1em;
-    background-color: #900251;
+    background-color: #f44336;
     color: white;
 }
 
+#logOut:hover{
+    margin-top: 1em;
+    background-color: #ab261e;
+    color: white;
+}
+
+
 #cartList {
     padding: 15px;
-    color: #1d1d1d;
-    background-color: white;
+    color: #191919;
     overflow-y: auto;
     max-height: 40vh;
     min-height: 10vh;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 #cartList img {
@@ -129,12 +138,11 @@ main {
 }
 
 .cartElement {
-    margin-top: 5px;
     font-size: 1.2em;
 }
 
 .header {
-    background-color: #262626;
+    background-color: #f2f2f2;
     padding: 5px;
     min-height: 80px;
 }
@@ -151,6 +159,7 @@ div.center {
     margin: auto;
     max-width: 100%;
     max-height: 100%;
+    padding:10px;
 }
 
 .sublink {
@@ -158,16 +167,16 @@ div.center {
 }
 
 .page-footer {
-    background-color: #1d1d1d;
+    background-color: #b2b2b2;
 }
 
 .page-footer .footer-copyright {
     text-align: center;
-    color: #ccc;
+    color: #2a2a2a;
 }
 
 .page-footer a {
-    color: #ccc;
+    color: #29580c;
 }
 
 .page-footer a:hover {
@@ -321,4 +330,31 @@ textarea.materialize-textarea:focus:not([readonly]) {
     top: 0;
     cursor: default;
     color: white;
+}
+
+.header{
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.sidenav.sidenav-fixed {
+    border-top: calc(var(--body-border-width, 15px) * 1 / 1 + 0px) solid #0d860f;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+body {
+    border-top: calc(var(--body-border-width, 15px) * 1 / 1 + 0px) solid #0d860f;
+}
+
+.product-item{
+    border-radius: 7px;
+    border: 7pt white solid;
+}
+
+.product-item:active{
+    border-radius: 7px;
+    border: 7pt solid #0d860f;
 }
