@@ -91,10 +91,11 @@ main {
     padding-left: 300px;
 }
 
-@media only screen and (max-width : 992px) {
+@media only screen and (max-width: 992px) {
     header, main, footer {
         padding-left: 0;
     }
+
     .store-padding {
         padding-left: 0;
     }
@@ -111,12 +112,11 @@ main {
     color: white;
 }
 
-#logOut:hover{
+#logOut:hover {
     margin-top: 1em;
     background-color: #ab261e;
     color: white;
 }
-
 
 #cartList {
     padding: 15px;
@@ -159,7 +159,7 @@ div.center {
     margin: auto;
     max-width: 100%;
     max-height: 100%;
-    padding:10px;
+    padding: 10px;
 }
 
 .sublink {
@@ -262,7 +262,6 @@ textarea.materialize-textarea:focus:not([readonly]) {
     width: 100%;
 }
 
-
 .total-text {
     width: 50%;
     padding-left: 1em;
@@ -309,14 +308,6 @@ textarea.materialize-textarea:focus:not([readonly]) {
     font-size: 1.6em;
 }
 
-#product-name {
-    background-color: #00000088;
-    border-top-right-radius: 25px;
-    max-width: 80%;
-    padding: 16px;
-    font-size: 21px;
-}
-
 #product-stock {
     position: absolute;
     left: 0;
@@ -332,7 +323,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
     color: white;
 }
 
-.header{
+.header {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -349,12 +340,27 @@ body {
     border-top: calc(var(--body-border-width, 15px) * 1 / 1 + 0px) solid #0d860f;
 }
 
-.product-item{
+.product-item {
     border-radius: 7px;
     border: 7pt white solid;
 }
 
-.product-item:active{
+.product-item:active {
     border-radius: 7px;
     border: 7pt solid #0d860f;
+}
+
+#product-name {
+    background-color: #ffffff80;
+    border-top-right-radius: 25px;
+    max-width: 80%;
+    padding: 16px;
+    font-size: 13px;
+    color: #272727;
+    font-weight: bold;
+}
+
+#product-sock {
+    background-color: #5fb030;
+    color: #104611;
 }
