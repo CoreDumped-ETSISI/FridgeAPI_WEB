@@ -12,27 +12,36 @@ function stageSwitch() {
       localStorage.setItem(keyName, false);
       s.click();
     } else {
-      changeStyleSheet(darkCss);
+      changeStyleSheet(darkCss, lightCss);
     }
   }
 }
 
 function changeSwitch() {
   if (localStorage.getItem(keyName) === "true") {
-    changeStyleSheet(lightCss);
-    localStorage.setItem(keyName, false);
+    switchClicked(lightCss, darkCss, false);
   } else {
-    changeStyleSheet(darkCss);
-    localStorage.setItem(keyName, true);
+    switchClicked(darkCss, lightCss, true);
   }
 }
 
-function changeStyleSheet(newCss) {
+function switchClicked(newCss, oldCss, boolVal){
+  changeStyleSheet(newCss, oldCss);
+  localStorage.setItem(keyName, boolVal);
+}
+
+function changeStyleSheet(newCss, oldCss) {
   var link = document.createElement("link");
   link.type = "text/css";
   link.rel = typeSheet;
   link.media = "screen,projection";
   link.href = newCss;
 
-  document.head.appendChild(link);
+  new Promise((resolve, reject) => {
+    document.head.appendChild(link);
+    resolve();
+  }).then(content => {
+    console.log("eliminando css anterior")
+    $(`link[rel=${typeSheet}][href=${oldCss}]`).remove();
+  })
 }
