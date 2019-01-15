@@ -3,9 +3,7 @@ const lightCss = "/css/main_style.css";
 const darkCss = "/css/main_style_dark.css";
 const typeSheet = "stylesheet";
 
-stageSwitch();
-
-function stageSwitch() {
+$(window).ready(function() {
   var s = document.getElementById("switchCheckbox");
   if (localStorage.getItem(keyName) === "true") {
     if (s) {
@@ -16,6 +14,7 @@ function stageSwitch() {
     }
   }
 }
+);
 
 function changeSwitch() {
   if (localStorage.getItem(keyName) === "true") {
@@ -37,11 +36,10 @@ function changeStyleSheet(newCss, oldCss) {
   link.media = "screen,projection";
   link.href = newCss;
 
-  new Promise((resolve, reject) => {
+  //new Promise((resolve, reject) => {
     document.head.appendChild(link);
-    resolve();
+  /*  resolve();
   }).then(content => {
-    console.log("eliminando css anterior")
-    $(`link[rel=${typeSheet}][href=${oldCss}]`).remove();
-  })
+    $(`link[rel='${typeSheet}'][href='${oldCss}']`).remove();
+  })*/
 }
