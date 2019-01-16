@@ -23,9 +23,15 @@ block main-content
                     input#rePassword(type='password')
                     label(for='rePassword') Repeat password
             .row
-                .input-field.col.s12
-                    a.btn.light-green.accent-4.waves-effect.waves-light.col.s12.white-text(href='#' onclick='register()') Sign In
-
+                .col.s12.l8.push-l4.margin-bottom
+                    a.btn.verde-core.waves-effect.waves-light.texto-oscuro.col.s12(href='#' onclick='register()') Sign Up
+                .col.s4.l4.pull-l8
+                    a.btn.rojo.waves-effect.waves-light.texto-oscuro.col.s12(href='/')
+                        i.material-icons.left.tiny arrow_back
+                        span back
+            .row.center
+                .col.s12
+                    include switch.pug
 block scripts
     script(src='/js/croppie/croppie.js')
     script(src='/js/imageUploader.js')

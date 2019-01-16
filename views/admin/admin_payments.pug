@@ -2,16 +2,24 @@ extends ../header_layout
 
 block main-content
     .col.s12.m8.offset-m2.l6.offset-l3.z-depth-4.card-panel(style='padding: 2em')
-        .input-field
-            select#comboUsers
-                option(value="" disabled selected) ...
-            label User list
         .row
-        .input-field
-            input#cashToAdd(type='number' step='0.01')
-            label(for="cashToAdd") Amount
-        .input-field
-            a.btn.btnSendPayment.col.s12(onclick='sendPayment()') SEND
+            .input-field
+                select#comboUsers
+                    option(value="" disabled selected) ...
+                label User list
+            .input-field
+                input#cashToAdd(type='number' step='0.01')
+                label(for="cashToAdd") Amount
+        .row
+            .col.s12.l8.push-l4.margin-bottom
+                a.btn.verde-core.waves-effect.waves-light.texto-oscuro.col.s12(href="#" onclick='sendPayment()') SEND
+            .col.s4.l4.pull-l8
+                a.btn.rojo.waves-effect.waves-light.texto-oscuro.col.s12(href='/admin')
+                    i.material-icons.left.tiny arrow_back
+                    span back
+        .row.center
+            .col.s12
+                include ../switch.pug
 
 block scripts
     script(src='/js/admin/admin_payments.js')

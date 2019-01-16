@@ -1,7 +1,7 @@
 extends header_layout
 
 block main-content
-    .col.s12.m8.offset-m2.l4.offset-l4.z-depth-4.card-panel(style='padding: 2em')
+    .col.s12.m8.offset-m2.l4.offset-l4.z-depth-4.card-panel(style='padding: 1em 2em; border-radius: 1em;')
         form#loginForm.login-form
             .row(style='margin-bottom: 0em')
                 .input-field.col.s12
@@ -20,8 +20,7 @@ block main-content
                         span Remember me
             .row
                 .input-field.col.s12
-                    p#login.btn.light-green.accent-4.waves-effect.waves-light.col.s12.white-text(onclick='login()') LOGIN
-            .divider
+                    p#login.btn.verde-core.waves-effect.waves-light.col.s12(onclick='login()') LOGIN
             .row
                 .input-field.col.s6.m6.l6
                     p.margin.medium-small
@@ -29,6 +28,9 @@ block main-content
                 .input-field.col.s6.m6.l6
                     p.margin.right-align.medium-small
                         a.sublink(href='./forgot-password') Forgot password?
+            .row.center
+                .col.s12
+                    include switch.pug
 
 block scripts
     script(src='/js/login.js')
