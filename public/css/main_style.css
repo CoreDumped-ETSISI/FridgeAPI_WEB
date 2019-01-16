@@ -1,19 +1,22 @@
-/* Custom Stylesheet */
-/**
-*
+/* Custom Stylesheet
+
 *Verde Core = #64dd17;
 *contraste = 900251;
 *claro=#ccc;
 *oscuro = #262626;
 *más oscuro = #1d1d1d;
+gris 1: #262626;
+verde core: #0d860f;
+verde saturado: #64dd17
 */
+
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:400,700');
 
 .roboto-mono {
     font-family: "Roboto Mono", serif !important;
 }
 
-.verde-core {
+.verde-core .light-green{
     background-color: #64dd17 !important;
 }
 
@@ -161,8 +164,12 @@ div.center {
     max-width: 100%;
     max-height: 100%;
     padding: 10px;
+    background: url('/images/logo.png');
+    background-position: 50% 50%;
+    -webkit-background-size: contain;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
-
 .sublink {
     color: #262626;
 }
@@ -329,9 +336,17 @@ textarea.materialize-textarea:focus:not([readonly]) {
     -moz-box-shadow: none;
     box-shadow: none;
 }
-
+/*Switch*/
 .switch {
     padding: 1em;
+}
+/* switch color */
+.switch label input[type="checkbox"]:checked + .lever::after {
+    background-color: #0d860f;
+}
+
+.switch label input[type="checkbox"]:checked + .lever {
+    background-color: hsla(0,0%,0%,0.2);
 }
 
 .sidenav.sidenav-fixed {
@@ -365,3 +380,18 @@ textarea.materialize-textarea:focus:not([readonly]) {
     background-color: #5fb030;
     color: #104611;
 }
+
+.btn:hover:before{
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255, 0.2);
+    -moz-transition: background .5s linear;
+    -webkit-transition: background .5s linear;
+    -o-transition: background .5s linear;
+    transition: background .5s linear;
+    }

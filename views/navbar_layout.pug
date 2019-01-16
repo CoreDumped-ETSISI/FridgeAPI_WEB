@@ -5,7 +5,7 @@ block content
         nav.header(role='navigation')
             .nav-wrapper.container.center
                 a(href='/store')
-                    img.logo-header(src='/images/logo.svg' style='padding:10px;')
+                    div.logo-header(style="width:500px;height:100%;")
 
     #userModal.modal(style="width: 50% !important;")
         .modal-content
@@ -30,30 +30,32 @@ block content
                                 input#user_repass.validate(type="password")
                                 label(for="user_repass") Repeat password
                         .modal-footer.row
-                            .col.s6
-                                a.btn.modal-action.waves-effect.waves-green.white-text(href="#!" onclick="saveUser()" ) Save
-                            .col.s6
-                                a.btn.red.modal-action.modal-close.waves-effect.waves-red.white-text(href="#!") Cancel
+                            .col.s12
+                                a.btn.modal-action.waves-effect.waves-green.white-text.full-width(href="#!" onclick="saveUser()" ) Save
+                            .col.s12
+                                a.btn.red.modal-action.modal-close.waves-effect.waves-red.white-text.full-width(href="#!") Cancel
 
-    ul#slide-out.sidenav.sidenav-fixed.claro.texto-oscuro
+    ul#slide-out.sidenav.sidenav-fixed
         li
-            .user-view.claro
+            .user-view
                 .background
                 a#photo.modal-trigger(href="#userModal")
-                span.texto-oscuro.name
-                span.texto-oscuro.email
-                span.texto-oscuro.saldo-position.roboto-mono
+                span.name
+                span.email
+                span.saldo-position.roboto-mono
                     | Saldo:
-                    span#saldo.texto-oscuro
+                    span#saldo
         block navbar-content
         li
             div(style='padding-top:25px;')
                 .action-btn.sidebar-margins
-                    a.waves-effect.waves-light.btn.sidebar-button.claro.texto-oscuro(href='/store') Tienda
+                    a.waves-effect.waves-light.btn.sidebar-button(href='/store') Tienda
                 .action-btn.sidebar-margins
-                    a.waves-effect.waves-light.btn.sidebar-button.claro.texto-oscuro(href='/purchase-history') Historial de compras
+                    a.waves-effect.waves-light.btn.sidebar-button(href='/purchase-history') Historial de compras
                 .action-btn.sidebar-margins
-                    a.waves-effect.waves-light.btn.sidebar-button.claro.texto-oscuro(href='/payment-history') Historial de pagos
+                    a.waves-effect.waves-light.btn.sidebar-button(href='/payment-history') Historial de pagos
+            div.center
+                include switch.pug
             // Cerrar sesión
             .action-btn.sidebar-margins
                 a#logOut.waves-effect.waves-light.btn.sidebar-button(title='log out' onclick='deleteCredentials()')
