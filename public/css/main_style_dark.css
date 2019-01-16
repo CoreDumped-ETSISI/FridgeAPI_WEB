@@ -9,14 +9,13 @@ gris 1: #262626;
 verde core: #0d860f;
 verde saturado: #64dd17
 */
-
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:400,700');
 
 .roboto-mono {
     font-family: "Roboto Mono", serif !important;
 }
 
-.verde-core .light-green{
+.verde-core .light-green {
     background-color: #0d860f !important;
 }
 
@@ -28,7 +27,9 @@ verde saturado: #64dd17
     background-color: #f44336 !important;
 }
 
-.margin-bottom{margin-bottom: 0.5rem;}
+.margin-bottom {
+    margin-bottom: 0.5rem;
+}
 
 .texto-verde-core {
     color: #64dd17 !important;
@@ -70,7 +71,7 @@ verde saturado: #64dd17
     background-color: #dadada;
 }
 
-.btn:hover:before{
+.btn:hover:before {
     content: "";
     display: block;
     position: absolute;
@@ -78,7 +79,7 @@ verde saturado: #64dd17
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(255,255,255, 0.2);
+    background: rgba(255, 255, 255, 0.2);
     -moz-transition: background .5s linear;
     -webkit-transition: background .5s linear;
     -o-transition: background .5s linear;
@@ -154,12 +155,10 @@ main {
 }
 
 .header {
-    background-color: #262626;
+    background-color: #1d1d1d;
     padding: 5px;
     min-height: 80px;
 }
-
-
 
 html, body {
     height: 100%;
@@ -196,7 +195,7 @@ div.center {
 }
 
 /*login*/
-.card-panel{
+.card-panel {
     background-color: #262626;
     border-color: #262626;
     -webkit-border-radius: 13px;
@@ -208,10 +207,10 @@ div.center {
     color: #ccc;
 }
 
-
 .sublink {
     color: #b2b2b2;
 }
+
 .sublink:hover {
     color: #64dd17;
 }
@@ -378,17 +377,19 @@ textarea.materialize-textarea:focus:not([readonly]) {
     -moz-box-shadow: none;
     box-shadow: none;
 }
+
 /*Switch*/
 .switch {
     padding: 1em;
 }
+
 /* switch color */
 .switch label input[type="checkbox"]:checked + .lever::after {
     background-color: #0d860f;
 }
 
 .switch label input[type="checkbox"]:checked + .lever {
-    background-color: hsla(0,0%,0%,0.2);
+    background-color: hsla(0, 0%, 0%, 0.2);
 }
 
 .sidenav.sidenav-fixed {
@@ -430,12 +431,12 @@ textarea.materialize-textarea:focus:not([readonly]) {
 }
 
 /*input text*/
-input > -moz-fieldtext, input{
+input > -moz-fieldtext, input {
     color: #ccc;
 }
 
 /*labels color*/
-.label{
+.label {
     color: #ccc !important;
 }
 
@@ -461,7 +462,6 @@ input > -moz-fieldtext, input{
     fill: #ccc;;
 }
 
-
 /* END dropdown color */
 
 /*stock badge*/
@@ -471,11 +471,10 @@ span.badge.new {
 
 /* slide out navbar*/
 
-#slide-out{
+#slide-out {
     background-color: #262626;
     color: #ccc;
 }
-
 
 /* modal */
 
@@ -485,8 +484,13 @@ span.badge.new {
 }
 
 /* users list - collapsible */
-.collapsible-header, .collapsible-body{
+.collapsible-header, .collapsible-body {
 
     background-color: #262626;
     border-bottom: 0;
+}
+
+/*toast link*/
+.toast a {
+    color: #cccccc !important;
 }
