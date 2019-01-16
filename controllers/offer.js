@@ -21,7 +21,8 @@ function getOffer(req, res) {
 }
 
 function getOfferList(req, res) {
-    Offer.find({})
+    Offer.find()
+        .populate(path = "products", model = "product")
         .exec((err, offers) => {
             if (err) return res.sendStatus(500);
             if (!offers) return res.sendStatus(404);
@@ -29,9 +30,9 @@ function getOfferList(req, res) {
         })
 }
 
-function getAvailableOfferList(req, res) {
-    Offer.find({stock: {$gt: 0}})
-        .select('-products')
+function getAvailableOfferList(req, res) {//TODO: NOT finished
+    Offer.find()
+        .populate(path = "products", model = "product")
         .exec((err, offers) => {
             if (err) return res.sendStatus(500);
             if (!offers) return res.sendStatus(404);
@@ -45,14 +46,11 @@ function updateOffer(req, res) {
 
     const name = req.body.name;
     const price = req.body.price;
-    const stock = req.body.stock;
-    const units = req.body.units;
+    const products = req.body.products;
     const ext = image.obtainExt(req.file);
 
     if (!name &&
         !price &&
-        !units &&
-        !stock &&
         !ext)
         return res.sendStatus(400);
 
@@ -62,18 +60,14 @@ function updateOffer(req, res) {
         updatedFields.name = name;
     }
 
-    if (stock) {
-        if (!input.validInt(stock)) return res.sendStatus(400);
-        updatedFields.stock = stock;
+    if (products) {
+        if (typeof products === 'undefined' || products.length < 0) return res.sendStatus(400);
+        updatedFields.products = products;
     }
 
-    if (price && units) {
-        console.log('Price');
+    if (price) {
         if (!input.validFloat(price)) return res.sendStatus(400);
-        if (!input.validInt(units)) return res.sendStatus(400);
-        console.log('Price2');
-        updatedFields.marketPrice = price / units;
-        updatedFields.price = services.calcPrice(updatedFields.marketPrice);
+        updatedFields.price = price;
     }
     Offer.findOne({_id: offerId})
         .exec((err, offer) => {
@@ -100,28 +94,29 @@ function updateOffer(req, res) {
 function saveOffer(req, res) {
     const name = req.body.name;
     const price = req.body.price;
-    const stock = req.body.stock;
+    const products = req.body.products;
     const ext = image.obtainExt(req.file);
     let imagePath = null;
 
     if (!input.validOfferName(name) ||
-        !input.validFloat(price) ||
-        !input.validInt(stock))
+        !input.validFloat(price))
         return res.sendStatus(400);
+
+    if (products) {
+        if (typeof products === 'undefined' || products.length < 0) return res.sendStatus(400);
+        updatedFields.products = products;
+    }
 
       Offer.findOne({name: name}, (err, offerExist) => {
         if (err) return res.sendStatus(500);
         if (offerExist) return res.sendStatus(409);
 
-        const marketPrice = price / stock;
-        const finalPrice = services.calcPrice(price / stock);
         if(ext) imagePath = path.join(config.OFFERS_IMAGES_PATH, image.convertToValidName(name) + ext);
         else imagePath = config.DEFAULT_PRODUCT_IMAGE;
 
         const offer = new Offer({
             name: name,
-            marketPrice: marketPrice,
-            price: finalPrice,
+            price: price,
             image: imagePath,
             stock: stock
         });
