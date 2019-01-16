@@ -36,10 +36,5 @@ function changeStyleSheet(newCss, oldCss) {
   link.media = "screen,projection";
   link.href = newCss;
 
-  //new Promise((resolve, reject) => {
-    document.head.appendChild(link);
-  /*  resolve();
-  }).then(content => {
-    $(`link[rel='${typeSheet}'][href='${oldCss}']`).remove();
-  })*/
+  document.head.appendChild(link);
 }

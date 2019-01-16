@@ -53,6 +53,7 @@ function addToCart(id) {
         cart.push(product);
         updateStock(id, -1);
 
+        M.toast({html: `${product.name} añadido al carrito`, classes: 'blue'});
         createCartElement(product, (cart.length - 1));
         reloadCart();
     }
@@ -77,11 +78,12 @@ function createCartElement(product, index) {
     $("#cartList").append('<li class="cartElement valign-wrapper">' +
         '    <img class="responsive-img" src="' + product.image + '" style="width: 15%; margin-left: 5%; object-fit: contain;">' +
         '    <span style="width: 65%; padding-left: 1em;">' + product.name + '</span>' +
-        '    <i class="material-icons" onclick="eraseCartElement(\'' + product._id + '\','+ index +')" style="cursor: pointer;">clear</i>' +
+        '    <i class="material-icons" onclick="eraseCartElement(\'' + product._id + '\','+ index + ',\''+ product.name +'\')" style="cursor: pointer;">clear</i>' +
         '</li>');
 }
 
-function eraseCartElement(id, index) {
+function eraseCartElement(id, index, name) {
+    M.toast({html: `${name} eliminado del carrito`, classes: 'blue'});
     cart.splice(index, 1);
     updateStock(id, 1);
     reloadCart();
