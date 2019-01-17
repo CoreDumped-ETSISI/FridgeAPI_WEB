@@ -12,6 +12,7 @@ router.get('/', productCtrl.getProductList);
 router.get('/in-stock', productCtrl.getAvailableProductList);
 router.get('/:id', productCtrl.getProduct);
 router.patch('/:id', auth, admin, uploader.productImage.single('image'), productCtrl.updateProduct);
+router.post('/addStock/:id', auth, admin, productCtrl.addStock);
 router.delete('/:id', auth, admin, productCtrl.deleteProduct);
 
 module.exports = router;

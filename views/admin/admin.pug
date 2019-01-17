@@ -1,20 +1,14 @@
-extends ../header_layout
+extends admin_menu
 
-block main-content
-    .col.s12.m8.offset-m2.l4.offset-l4.z-depth-4.card-panel(style='padding: 2em')
-        .row
-            .col.s12
-                a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/add-new-product' ) Add products
-        .row
-            .col.s12
-                a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/update-product' ) Update products
-        .row
-            .col.s12
-                a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/add-payment' ) Make a payment
-        .row
-            .col.s12
-                a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/user-list' ) Users list
-        .row.center
-            .col.s12
-                include ../switch.pug
+block menu_content
+    .row
+        .col.s12
+            a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/products' ) Products
+    .row
+        .col.s12
+            a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/users' ) Users
+    //.row
+        .col.s12
+            a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/offers' ) Offers
+
 block scripts
