@@ -1,0 +1,17 @@
+extends admin_menu
+
+block menu_content
+    .row
+        .col.s12
+            a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/offers/add-new-offer' ) Add offers
+    .row
+        .col.s12
+            a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/offers/update-offer' ) Update offers
+
+block back_button
+    .row.col.s8.push-s2
+        a.btn.rojo.waves-effect.waves-light.texto-oscuro.col.s12(href='/admin')
+            i.material-icons.left.tiny arrow_back
+            span back
+
+block scripts

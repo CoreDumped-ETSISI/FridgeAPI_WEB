@@ -1,0 +1,26 @@
+extends ../header_layout
+
+block main-content
+    .col.s12.m8.offset-m2.l4.offset-l4.z-depth-4.card-panel(style='padding: 2em')
+        form.login-form
+            .row(style='margin-bottom: 3em')
+                .input-field
+                    select#comboProducts
+                        option(value="" disabled selected) ...
+                    label Product list
+            .row(style='margin-bottom: 0.5em')
+                .input-field
+                    input#productStock(type='text')
+                    label(for="productStock") Stock to add
+            .row.margin-bottom
+                .col.s12.l8.push-l4.margin-bottom
+                    a.btn.verde-core.waves-effect.waves-light.texto-oscuro.col.s12(onclick='sendStock()') ADD STOCK
+                .col.s4.l4.pull-l8
+                    a.btn.rojo.waves-effect.waves-light.texto-oscuro.col.s12(href='/admin/products')
+                        i.material-icons.left.tiny arrow_back
+                        span back
+            .row.margin-bottom.center
+                include ../switch.pug
+
+block scripts
+    script(src='/js/admin/admin_add_stock.js')
