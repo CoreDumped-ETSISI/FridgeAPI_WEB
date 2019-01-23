@@ -98,6 +98,36 @@ function updateProduct(req, res) {
         })
 }
 
+function addStock(req, res) {
+    const productId = req.params.id;
+    if (!input.validId(productId)) return res.sendStatus(400);
+
+    const stock = req.body.stock;
+
+    if (!stock)
+        return res.sendStatus(400);
+
+    let updatedFields = {};
+
+    if (stock) {
+        if (!input.validInt(stock)) return res.sendStatus(400);
+    }
+
+    Product.findOne({_id: productId})
+        .exec((err, product) => {
+            if (err) return res.sendStatus(500);
+            if (!product || product.length === 0) return res.sendStatus(404);
+
+            updatedFields.stock = (parseInt(product.stock) + parseInt(stock)).toString();
+
+            product.set(updatedFields);
+            product.save((err, productStored) => {
+                if (err) return res.sendStatus(500);
+                return res.status(200).send(productStored);
+            })
+        })
+}
+
 function saveProduct(req, res) {
     const name = req.body.name;
     const price = req.body.price;
@@ -153,5 +183,6 @@ module.exports = {
     getAvailableProductList,
     updateProduct,
     saveProduct,
-    deleteProduct
+    deleteProduct,
+    addStock
 };
