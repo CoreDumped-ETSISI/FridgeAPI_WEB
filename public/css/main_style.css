@@ -494,3 +494,10 @@ span.badge.new {
 .toast a {
     color: #cccccc !important;
 }
+
+@media only screen and (max-width: 600px) {
+  #toast-container {
+    top: 0% !important;
+    bottom: auto !important;
+  }
+}
