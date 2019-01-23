@@ -1,4 +1,18 @@
+dist: trusty
+sudo: false
+
 language: node_js
 node_js:
-  - "iojs"
-  - "7"
+  - "node"
+
+services:
+  - mongodb
+
+cache:
+  directories:
+    - "node_modules"
+
+after_script: "cat ./coverage/lcov.info | ./node_modules_coveralls/bin/coveralls.js"
+
+notifications:
+  email: false
