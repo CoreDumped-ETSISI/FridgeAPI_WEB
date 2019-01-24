@@ -1,5 +1,7 @@
 # Fridge API
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bc22da8baad8422db19c3732ff5a8e3a)](https://app.codacy.com/app/nestoroa/FridgeAPI_WEB?utm_source=github.com&utm_medium=referral&utm_content=CoreDumped-ETSISI/FridgeAPI_WEB&utm_campaign=Badge_Grade_Settings)
+
 [![Dependencies Status][npm-image]][npm-url]
 
 A RESTful API with web for the "Fridge Store" management in the [CoreDumped](http://coredumped.es/) association.
