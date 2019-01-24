@@ -3,6 +3,7 @@
 const services = require('../services');
 const input = require('../services/inputValidators');
 const Offer = require('../models/offer');
+const Product = require("../models/product");
 const config = require('../config');
 
 const path = require('path');
@@ -61,7 +62,7 @@ function updateOffer(req, res) {
     }
 
     if (products) {
-        if (typeof products === 'undefined' || products.length < 0) return res.sendStatus(400);
+        if (typeof products === 'undefined' || products.length <= 0) return res.sendStatus(400);
         updatedFields.products = products;
     }
 
@@ -94,37 +95,47 @@ function updateOffer(req, res) {
 function saveOffer(req, res) {
     const name = req.body.name;
     const price = req.body.price;
-    const products = req.body.products;
     const ext = image.obtainExt(req.file);
     let imagePath = null;
+    
+    if (!req.body.products) return res.sendStatus(400);
+    const idList = req.body.products.split(",");
 
-    if (!input.validOfferName(name) ||
+    if (!input.validProductName(name) ||
         !input.validFloat(price))
         return res.sendStatus(400);
 
-    if (products) {
-        if (typeof products === 'undefined' || products.length < 0) return res.sendStatus(400);
-        updatedFields.products = products;
-    }
-
-      Offer.findOne({name: name}, (err, offerExist) => {
+    Product.find({ _id: { $in: idList } }).exec(function(err, products) {
         if (err) return res.sendStatus(500);
-        if (offerExist) return res.sendStatus(409);
+        if (!products || products.length === 0) return res.sendStatus(404);
+        let productList = [];
+        for (let x = 0; x < products.length; x++) {
+            let count = services.countOccurrences(products[x]._id, idList);
+            let identifier = `${products[x]._id}`;
+            console.log(`identifier: ${identifier}`)
+            productList.push({ product: `${products[x]._id}`, quantity: count });
+        }
 
-        if(ext) imagePath = path.join(config.OFFERS_IMAGES_PATH, image.convertToValidName(name) + ext);
-        else imagePath = config.DEFAULT_PRODUCT_IMAGE;
-
-        const offer = new Offer({
-            name: name,
-            price: price,
-            image: imagePath,
-            stock: stock
-        });
-
-        offer.save((err, offerStored) => {
+        Offer.findOne({name: name}, (err, offerExist) => {
             if (err) return res.sendStatus(500);
-            if(ext) image.saveToDisk(req.file, imagePath, null);
-            return res.status(200).send(offerStored)
+            if (offerExist) return res.sendStatus(409);
+
+            if(ext) imagePath = path.join(config.OFFERS_IMAGES_PATH, image.convertToValidName(name) + ext);
+            else imagePath = config.DEFAULT_PRODUCT_IMAGE;
+
+            const offer = new Offer({
+                name: name,
+                price: price,
+                image: imagePath,
+                products: productList
+            });
+            console.log(`offer: ${offer}`)
+            console.log("prepared to save offer");
+            offer.save((err, offerStored) => {
+                if (err) return res.sendStatus(500);
+                if(ext) image.saveToDisk(req.file, imagePath, null);
+                return res.status(200).send(offerStored)
+            })
         })
     })
 }
