@@ -30,7 +30,7 @@ function addProduct() {
             });
         });
     } else {
-        M.toast({html: 'No prducts in offer', classes: 'orange'});
+        M.toast({html: 'No products in offer', classes: 'orange'});
     }
 }
 

@@ -111,9 +111,7 @@ function saveOffer(req, res) {
         let productList = [];
         for (let x = 0; x < products.length; x++) {
             let count = services.countOccurrences(products[x]._id, idList);
-            let identifier = `${products[x]._id}`;
-            console.log(`identifier: ${identifier}`)
-            productList.push({ product: `${products[x]._id}`, quantity: count });
+            productList.push({ product: products[x]._id, quantity: count });
         }
 
         Offer.findOne({name: name}, (err, offerExist) => {
@@ -129,8 +127,6 @@ function saveOffer(req, res) {
                 image: imagePath,
                 products: productList
             });
-            console.log(`offer: ${offer}`)
-            console.log("prepared to save offer");
             offer.save((err, offerStored) => {
                 if (err) return res.sendStatus(500);
                 if(ext) image.saveToDisk(req.file, imagePath, null);
