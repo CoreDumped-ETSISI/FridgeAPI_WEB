@@ -11,4 +11,12 @@ block menu_content
         .col.s12
             a.btn.waves-effect.waves-light.white-text.col.s12(href='/admin/offers' ) Offers
 
+
+block back_button
+        .row.action-btn(style="margin-bottom: 30px !important;")
+                a#logOut.waves-effect.waves-light.btn.sidebar-button(title='log out' onclick='deleteCredentials()')
+                    | Cerrar sesi&oacute;n
+
+
 block scripts
+    script(src="/js/admin/admin.js")

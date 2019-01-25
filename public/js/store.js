@@ -16,7 +16,6 @@ function getProductList() {
         productList = JSON.parse(JSON.stringify(res));
 
         createProductCards();
-        //loadCart();
     });
 }
 
