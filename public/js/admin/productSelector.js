@@ -23,7 +23,6 @@ function createProductCards() {
     products.empty();
 
     for (let i = 0; i < productList.length; i++) {
-        for (let y = 0; y < 20; y++) 
         products.append(productCard(productList[i]));
     }
     setTimeout(() => {

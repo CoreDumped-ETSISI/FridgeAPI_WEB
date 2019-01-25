@@ -503,6 +503,7 @@ span.badge.new {
 }
 
 .max-height-admin-prodSelector {
+    overflow-y: auto;
     height: 40vh;
     max-height: 40vh;
     border-radius: 7px;
