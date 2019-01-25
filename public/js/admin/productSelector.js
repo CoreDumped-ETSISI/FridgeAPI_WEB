@@ -1,5 +1,3 @@
-const ApiURL = 'http://localhost:3000';
-
 let productList;
 
 let cart = [];
@@ -13,7 +11,7 @@ function initPage() {
 }
 
 function getProductList() {
-    request('GET', `${ApiURL}/product`, null, (res) => {
+    request('GET', `/product`, null, (res) => {
         productList = JSON.parse(JSON.stringify(res));
 
         createProductCards();
@@ -25,6 +23,7 @@ function createProductCards() {
     products.empty();
 
     for (let i = 0; i < productList.length; i++) {
+        for (let y = 0; y < 20; y++) 
         products.append(productCard(productList[i]));
     }
     setTimeout(() => {
