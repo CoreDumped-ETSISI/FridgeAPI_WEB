@@ -55,8 +55,7 @@ function addToCart(id) {
     reloadCart();
 }
 
-function eraseCartElement(index, name) {
-    M.toast({html: `${name} eliminado del carrito`, classes: 'blue'});
+function eraseCartElement(index) {
     cart.splice(index, 1);
     reloadCart();
 }
@@ -78,6 +77,6 @@ function createCartElement(product, index) {
     $("#cartList").append('<li class="cartElement valign-wrapper">' +
         '    <img class="responsive-img" src="' + product.image + '" style="width: 15%; margin-left: 5%; object-fit: contain;">' +
         '    <span style="width: 65%; padding-left: 1em;">' + product.name + '</span>' +
-        '    <i class="material-icons" onclick="eraseCartElement('+ index + ',\''+ product.name +'\')" style="cursor: pointer;">clear</i>' +
+        '    <i class="material-icons" onclick="eraseCartElement('+ index + ')" style="cursor: pointer;">clear</i>' +
         '</li>');
 }

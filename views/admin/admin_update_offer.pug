@@ -17,16 +17,8 @@ block main-content
                     label(for="productName") Name
             .row(style='margin-bottom: 0.5em')
                 .input-field
-                    input#productStock(type='text')
-                    label(for="productStock") Stock
-            .row(style='margin-bottom: 0.5em')
-                .input-field
                     input#productPrice(type='number' min='0' step='0.01')
                     label(for="productPrice") Price
-            .row(style='margin-bottom: 0.5em')
-                .input-field
-                    input#productUnits(type='number' min='0')
-                    label(for="productUnits") Units (only used to calculate the price)
             .row
                 .col.s12.margin-bottom
                     include productSelector.pug
@@ -44,5 +36,5 @@ block main-content
 block scripts
     script(src='/js/croppie/croppie.js')
     script(src='/js/imageUploader.js')
-    script(src='/js/admin/admin_update_product.js')
+    script(src='/js/admin/admin_update_offer.js')
     script(src='/js/admin/productSelector.js')

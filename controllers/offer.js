@@ -23,7 +23,6 @@ function getOffer(req, res) {
 
 function getOfferList(req, res) {
     Offer.find()
-        .populate(path = "products", model = "product")
         .exec((err, offers) => {
             if (err) return res.sendStatus(500);
             if (!offers) return res.sendStatus(404);
