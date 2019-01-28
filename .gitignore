@@ -12,6 +12,7 @@ node_modules/
 # Image directories
 public/images/products/
 public/images/userImages/
+public/images/offers/
 
 # Configuration file
 config.js

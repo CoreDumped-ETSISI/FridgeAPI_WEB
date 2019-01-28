@@ -56,6 +56,7 @@ function convertToValidName(imageName) {
 module.exports = {
     userImage: multer({storage: storage}),
     productImage: multer({storage: storage}),
+    offerImage: multer({storage: storage}),
     saveToDisk: saveToDisk,
     obtainExt: imageFormat,
     convertToValidName: convertToValidName
