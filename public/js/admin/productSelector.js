@@ -50,7 +50,6 @@ function addToCart(id) {
     })[0];
     cart.push(product);
 
-    M.toast({html: `${product.name} añadido al carrito`, classes: 'blue'});
     createCartElement(product, (cart.length - 1));
     reloadCart();
 }
