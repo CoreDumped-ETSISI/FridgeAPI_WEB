@@ -7,6 +7,7 @@ const OfferSchema = Schema({
     name: String,
     price: Number,
     image: String,
+    stock: Number,
     products: [{
         _id: false,
         product: { type: Schema.Types.ObjectId, ref: 'Product' },

@@ -46,11 +46,77 @@ function getAvailableOfferList(req, res) {
         model: "Product"
       }
     })
-    .exec((err, offers) => {
+    .exec(async (err, offers) => {
       if (err) return res.sendStatus(500);
       if (!offers) return res.sendStatus(404);
-      return res.status(200).send(offers);
+
+      let availableOffers = [];
+
+      calculateOfferListAvailavility(offers).then(async (response) => {
+        for(let i = 0; i < response.length; i++){
+          if(response[i].haveStock){
+            offers[i].stock = response[i].stock;
+            availableOffers.push(offers[i]);
+    
+            console.log(`push offer ${offers[i].name}. Stock: ${response[i].stock}`);
+          }
+    
+          if(i === response.length-1){
+            return res.status(200).send(availableOffers);
+          }
+        }
+      });
     });
+}
+
+async function calculateOfferListAvailavility(offers){
+  let promiseList = [];
+
+  for(let i = 0; i < offers.length; i++){
+    promiseList.push(await calculateOfferAvailavility(offers[i]));
+  }
+
+   return Promise.all(promiseList);
+}
+
+function calculateOfferAvailavility(offer){
+  return new Promise((resolve, reject) => {
+    let promiseList = [];
+    let minStock = 0;
+  
+    for(let x = 0; x < offer.products.length; x++){
+      promiseList.push(calculateAvailableStock(offer.products[x]));
+    }
+
+    Promise.all(promiseList).then(response => {
+      for(let i = 0; i < response.length; i++){
+        if(response[i].haveStock){
+          if (minStock === 0  || response[i].stock < minStock) {
+            minStock = response[i].stock;
+          }
+
+          if (i === offer.products.length-1){
+            resolve({stock: minStock, haveStock: true});
+          } 
+        } else {
+          resolve({stock: -69, haveStock: false});
+        }
+      }
+    });
+  });
+}
+
+function calculateAvailableStock(offerItem){
+  return new Promise((resolve, reject) => {
+    let divStock = offerItem.product.stock / offerItem.quantity;
+    let countStock = divStock - (divStock % 1);
+
+    if(countStock < 1){
+      resolve({stock: countStock, haveStock: false});
+    } else {
+      resolve({stock: countStock, haveStock: true});
+    }
+  })
 }
 
 function updateOffer(req, res) {
@@ -64,25 +130,19 @@ function updateOffer(req, res) {
   if (!req.body.products) return res.sendStatus(400);
   const idList = req.body.products.split(",");
 
-  if (!name && !price && !ext && !idList) {
-    console.log("not all fileds in body");
+  if (!name && !price && !ext && !idList)
     return res.sendStatus(400);
-  }
 
   let updatedFields = {};
   if (name) {
-    if (!input.validProductName(name)) {
-      console.log("not valid name");
+    if (!input.validProductName(name))
       return res.sendStatus(400);
-    }
     updatedFields.name = name;
   }
 
   if (price) {
-    if (!input.validFloat(price)) {
-      console.log("not valid price");
+    if (!input.validFloat(price))
       return res.sendStatus(400);
-    }
     updatedFields.price = price;
   }
 
@@ -100,19 +160,14 @@ function updateOffer(req, res) {
     }
 
     Offer.findOne({ _id: offerId }).exec((err, offer) => {
-      if (err) {
-        console.log(`Error: ${err}`);
+      if (err)
         return res.sendStatus(500);
-      }
-      if (!offer || offer.length === 0) {
-        console.log(`Offer not founded: ${offerId}`);
+      
+      if (!offer || offer.length === 0)
         return res.sendStatus(404);
-      }
 
-      console.log(`Offer founded: ${offerId}`);
       let imagePath = null;
       if (ext) {
-        console.log(`hay imagen`);
         if (updatedFields.name)
           imagePath = path.join(
             config.OFFERS_IMAGES_PATH,
@@ -125,15 +180,12 @@ function updateOffer(req, res) {
           );
         updatedFields.image = imagePath;
         image.saveToDisk(req.file, imagePath, null);
-        console.log(`Saved image`);
       }
       offer.set(updatedFields);
       offer.save((err, offerStored) => {
-        if (err) {
-          console.log(`Offer not stored. Error: ${err}`);
+        if (err) 
           return res.sendStatus(500);
-        }
-        console.log(`Offer stored: ${offerStored}`);
+        
         return res.status(200).send(offerStored);
       });
     });
