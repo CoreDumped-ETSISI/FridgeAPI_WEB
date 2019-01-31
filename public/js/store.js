@@ -8,7 +8,16 @@ initPage();
 
 function initPage() {
     getProductList();
+    getOfferList();
     listIsEmpty();
+}
+
+function getOfferList() {
+  request('GET', 'offer/in-stock', null, (res) => {
+      offerList = JSON.parse(JSON.stringify(res));
+
+      createOfferCards();
+  });
 }
 
 function getProductList() {
@@ -23,24 +32,74 @@ function createProductCards() {
     const products = $("#products");
     products.empty();
 
+    if (productList.length > 0) {
+      products.append(title('Productos'));
+    }
+
     for (let i = 0; i < productList.length; i++) {
         products.append(productCard(productList[i]));
     }
+
+    setTimeout(() => {
+        $('.scale-out').toggleClass('scale-out', 'scale-in');
+    }, 500);
+}
+
+function createOfferCards() {
+    const offers = $("#offers");
+    offers.empty();
+
+    if (offerList.length > 0) {
+      offers.append(title('Ofertas'));
+    }
+
+    for (let i = 0; i < offerList.length; i++) {
+      offers.append(offerCard(offerList[i]));
+    }
+
     setTimeout(() => {
         $('.scale-out').toggleClass('scale-out', 'scale-in');
     }, 500);
 }
 
 function productCard(product) {
-    return '<div class="col s6 m4 l3 xl2">' +
-        '<div class="card scale-transition waves-effect waves-green scale-out product-item">' +
-        '<div id="' + product._id + '" class="card-image" onclick="addToCart(\'' + product._id + '\')">' +
-        '<img src="' + product.image + '" />' +
-        '<span class="card-title" id="product-name">' + product.name + '</span>' +
-        '<span class="new badge" id="product-stock" data-badge-caption=" en stock ">' + product.stock + '</span>' +
-        '<a class="btn red" id="product-price">' + product.price + '€</a></div></div></div>'
+  return card(product, 'addToCart');
 }
 
+function offerCard(offer) {
+  return card(offer, 'addOfferToCart');
+}
+
+function card(product, funcName) {
+  return `<div class="col s6 m4 l3 xl2">
+          <div class="card scale-transition waves-effect waves-green scale-out product-item">
+          <div id="${product._id}" class="card-image" onclick="${funcName}('${product._id}')">
+          <img src="${product.image}"/>
+          <span class="card-title" id="product-name">${product.name}</span>
+          <span class="new badge" id="product-stock" data-badge-caption=" UDS ">${product.stock}</span>
+          <a class="btn red" id="product-price">${product.price}€</a></div></div></div>`
+}
+
+function title(name) {
+  return `<div class="scale-out scale-transition">
+          <h5>${name}</h5>
+          <div class="divider"></div>
+          </div><br>`
+}
+
+function addOfferToCart(id) {
+    let offer = offerList.filter((elem) => {
+        return elem._id === id;
+    })[0];
+
+    offers.push(offer);
+
+    for (let i = 0; i < offer.products.length; i++){
+
+      updateStock(offer.products[i].product._id, -offer.products[i].quantity);
+    }
+
+}
 function addToCart(id) {
     let productStock = $('#' + id).find('.badge');
     let stock = parseInt(productStock.text());
