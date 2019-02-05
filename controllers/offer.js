@@ -46,22 +46,20 @@ function getAvailableOfferList(req, res) {
         model: "Product"
       }
     })
-    .exec(async (err, offers) => {
+    .exec((err, offers) => {
       if (err) return res.sendStatus(500);
       if (!offers) return res.sendStatus(404);
 
       let availableOffers = [];
 
-      calculateOfferListAvailavility(offers).then(async (response) => {
-        for(let i = 0; i < response.length; i++){
-          if(response[i].haveStock){
+      calculateOfferListAvailavility(offers).then(response => {
+        for (let i = 0; i < response.length; i++) {
+          if (response[i].haveStock) {
             offers[i].stock = response[i].stock;
             availableOffers.push(offers[i]);
-    
-            console.log(`push offer ${offers[i].name}. Stock: ${response[i].stock}`);
           }
-    
-          if(i === response.length-1){
+
+          if (i === response.length - 1) {
             return res.status(200).send(availableOffers);
           }
         }
@@ -69,54 +67,54 @@ function getAvailableOfferList(req, res) {
     });
 }
 
-async function calculateOfferListAvailavility(offers){
+function calculateOfferListAvailavility(offers) {
   let promiseList = [];
 
-  for(let i = 0; i < offers.length; i++){
-    promiseList.push(await calculateOfferAvailavility(offers[i]));
+  for (let i = 0; i < offers.length; i++) {
+    promiseList.push(calculateOfferAvailavility(offers[i]));
   }
 
-   return Promise.all(promiseList);
+  return Promise.all(promiseList);
 }
 
-function calculateOfferAvailavility(offer){
+function calculateOfferAvailavility(offer) {
   return new Promise((resolve, reject) => {
     let promiseList = [];
     let minStock = 0;
-  
-    for(let x = 0; x < offer.products.length; x++){
+
+    for (let x = 0; x < offer.products.length; x++) {
       promiseList.push(calculateAvailableStock(offer.products[x]));
     }
 
     Promise.all(promiseList).then(response => {
-      for(let i = 0; i < response.length; i++){
-        if(response[i].haveStock){
-          if (minStock === 0  || response[i].stock < minStock) {
+      for (let i = 0; i < response.length; i++) {
+        if (response[i].haveStock) {
+          if (minStock === 0 || response[i].stock < minStock) {
             minStock = response[i].stock;
           }
 
-          if (i === offer.products.length-1){
-            resolve({stock: minStock, haveStock: true});
-          } 
+          if (i === offer.products.length - 1) {
+            resolve({ stock: minStock, haveStock: true });
+          }
         } else {
-          resolve({stock: -69, haveStock: false});
+          resolve({ haveStock: false });
         }
       }
     });
   });
 }
 
-function calculateAvailableStock(offerItem){
+function calculateAvailableStock(offerItem) {
   return new Promise((resolve, reject) => {
     let divStock = offerItem.product.stock / offerItem.quantity;
     let countStock = divStock - (divStock % 1);
 
-    if(countStock < 1){
-      resolve({stock: countStock, haveStock: false});
+    if (countStock < 1) {
+      resolve({ haveStock: false });
     } else {
-      resolve({stock: countStock, haveStock: true});
+      resolve({ stock: countStock, haveStock: true });
     }
-  })
+  });
 }
 
 function updateOffer(req, res) {
@@ -130,19 +128,16 @@ function updateOffer(req, res) {
   if (!req.body.products) return res.sendStatus(400);
   const idList = req.body.products.split(",");
 
-  if (!name && !price && !ext && !idList)
-    return res.sendStatus(400);
+  if (!name && !price && !ext && !idList) return res.sendStatus(400);
 
   let updatedFields = {};
   if (name) {
-    if (!input.validProductName(name))
-      return res.sendStatus(400);
+    if (!input.validProductName(name)) return res.sendStatus(400);
     updatedFields.name = name;
   }
 
   if (price) {
-    if (!input.validFloat(price))
-      return res.sendStatus(400);
+    if (!input.validFloat(price)) return res.sendStatus(400);
     updatedFields.price = price;
   }
 
@@ -154,17 +149,15 @@ function updateOffer(req, res) {
       let count = services.countOccurrences(products[x]._id, idList);
       productList.push({ product: products[x]._id, quantity: count });
 
-      if(x === products.length-1){
+      if (x === products.length - 1) {
         updatedFields.products = productList;
       }
     }
 
     Offer.findOne({ _id: offerId }).exec((err, offer) => {
-      if (err)
-        return res.sendStatus(500);
-      
-      if (!offer || offer.length === 0)
-        return res.sendStatus(404);
+      if (err) return res.sendStatus(500);
+
+      if (!offer || offer.length === 0) return res.sendStatus(404);
 
       let imagePath = null;
       if (ext) {
@@ -183,9 +176,8 @@ function updateOffer(req, res) {
       }
       offer.set(updatedFields);
       offer.save((err, offerStored) => {
-        if (err) 
-          return res.sendStatus(500);
-        
+        if (err) return res.sendStatus(500);
+
         return res.status(200).send(offerStored);
       });
     });

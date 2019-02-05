@@ -4,6 +4,7 @@ const services = require("../services");
 const input = require("../services/inputValidators");
 const Purchase = require("../models/purchase");
 const Product = require("../models/product");
+const Offer = require("../models/offer");
 const User = require("../models/user");
 
 function getPurchase(req, res) {
@@ -39,58 +40,127 @@ function getPurchaseListAll(req, res) {
 }
 
 function savePurchase(req, res) {
-  if (!req.body.productList) return res.sendStatus(400);
+  console.log(req.body)
+  if (!req.body.productList && !req.body.offerList) return res.sendStatus(400);
   let idList = req.body.productList.split(",");
+  let offersList = req.body.offerList.split(",");
+  console.log(`holi ${offersList.length}`)
 
-  let offersList = [];
-  if (!req.body.offersList) {
-    offersList = [];
-  } else {
-    offersList = req.body.offerList.split(",");
-  }
-
-  Product.find({ _id: { $in: idList } }).exec(function(err, products) {
-    if (err) return res.sendStatus(500);
-    if (!products || products.length === 0) return res.sendStatus(404);
-    let amount = 0;
-    let productList = [];
-    for (let x = 0; x < products.length; x++) {
-      let count = services.countOccurrences(products[x]._id, idList);
-      if (count > products[x].stock) {
-        return res.sendStatus(400);
-      }
-      amount += products[x].price * count;
-      productList.push({ product: products[x], quantity: count });
+  Offer.find({ _id: { $in: offersList } })
+  .populate({
+    path: "products.product",
+    populate: {
+      path: "product",
+      model: "Product"
     }
-    if (amount < 0.01) return res.sendStatus(400);
-    const purchase = new Purchase({
-      userId: req.user,
-      amount: amount,
-      productList: productList
-    });
+  }).exec(function(err, offers) {
+    if (offersList.length < 1 && err) return res.sendStatus(500);
 
-    User.findOne({ _id: req.user }).exec((err, user) => {
-      if (err) return res.sendStatus(500);
-      if (!user) return res.sendStatus(404);
-      if (user.balance - amount < -0.009) return res.sendStatus(402);
+    productIdListGenerator(offers, offersList, req.body.productList).then(response => {
+      console.log(`list: ${response}`)
+      let productIdList = response.split(",");
 
-      purchase.save((err, purchaseStored) => {
-        if (err) return res.sendStatus(500);
+      console.log(`productIdList: ${productIdList}`);
+      console.log(`only products: ${idList}`);
 
-        user.update({ $inc: { balance: -amount } }, (err, userStored) => {
-          if (err) return res.sendStatus(500);
-
-          for (let x = 0; x < products.length; x++) {
-            const count = services.countOccurrences(products[x]._id, idList);
-            products[x].update(
-              { $inc: { stock: -count } },
-              (err, userStored) => {}
-            );
+      Product.find({ _id: { $in: productIdList } }).exec(function(err, products) {
+        console.log("1")
+        if (productIdList.length < 1 && err) return res.sendStatus(500);
+        console.log("2")
+        if ( (!products || products.length === 0) && (!offers || offers.length === 0) ) return res.sendStatus(404);
+        console.log("3")
+        let amount = 0;
+        let productList = [];
+        let offerList = [];
+        if(offers){
+          console.log("hay ofertas")
+          for (let x = 0; x < offers.length; x++) {
+            let count = services.countOccurrences(offers[x]._id, offersList);
+            amount += offers[x].price * count; 
+            offerList.push({ offer: offers[x], quantity: count });
           }
-          return res.status(200).send(purchaseStored);
+        }
+        if(products){
+          console.log("hay productos")
+          for (let x = 0; x < products.length; x++) {
+            let count = services.countOccurrences(products[x]._id, idList);
+            if(count > 0){
+              if (count > products[x].stock) {
+                return res.sendStatus(400);
+              }
+              amount += products[x].price * count;
+              productList.push({ product: products[x], quantity: count });
+            }
+          }
+        }
+        if (amount < 0.01) return res.sendStatus(400);
+        const purchase = new Purchase({
+          userId: req.user,
+          amount: amount,
+          productList: productList,
+          offerList: offerList
+        });
+
+        User.findOne({ _id: req.user }).exec((err, user) => {
+          if (err) return res.sendStatus(500);
+          if (!user) return res.sendStatus(404);
+          if (user.balance - amount < -0.009) return res.sendStatus(402);
+
+          purchase.save((err, purchaseStored) => {
+            if (err) return res.sendStatus(500);
+            console.log(`cobrando: ${-amount}`)
+            user.updateOne({ $inc: { balance: -amount } }, (err, userStored) => {
+              if (err) return res.sendStatus(500);
+
+              for (let x = 0; x < products.length; x++) {
+                const count = services.countOccurrences(products[x]._id, productIdList);
+                products[x].updateOne(
+                  { $inc: { stock: -count } },
+                  (err, userStored) => {}
+                );
+              }
+              return res.status(200).send(purchaseStored);
+            });
+          });
         });
       });
-    });
+    })
+  });
+}
+
+function productIdListGenerator(offers, offerList, productList){
+  return new Promise((resolve, reject) => {
+    console.log("productIdListGenerator")
+
+    if(offers && offers.length > 0){//TODO: falla por aqui
+      let list = productList;
+
+      for (let i = 0; i < offers.length; i++){
+        let count = services.countOccurrences(offers[i]._id, offerList);
+        for (let j = 0; j < count; j++){
+          for (let x = 0; x < offers[i].products.length; x++){
+            for (let y = 0; y < offers[i].products[x].quantity; y++){
+              if(list === ""){
+                list = `${offers[i].products[x].product._id}`
+              } else {
+                list = `${list},${offers[i].products[x].product._id}`
+              }
+            }
+          }
+          console.log(`${offers[i].name}`)
+        }
+
+        if(i === offers.length-1){
+          console.log("resolving products + offer products")
+          resolve(list);
+        }
+        console.log(`loop ${i+j} of ${offers.length*count}`)
+      }
+    } else {
+      console.log("resolving only products")
+      resolve(productList);
+    }
+    console.log("productIdListGenerator END")
   });
 }
 
