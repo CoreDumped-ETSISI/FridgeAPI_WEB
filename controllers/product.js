@@ -71,8 +71,8 @@ function updateProduct(req, res) {
     if (price && units) {
         if (!input.validFloat(price)) return res.sendStatus(400);
         if (!input.validInt(units)) return res.sendStatus(400);
-        updatedFields.marketPrice = price / units;
-        updatedFields.price = services.calcPrice(updatedFields.marketPrice);
+        updatedFields.marketPrice = price;
+        updatedFields.price = updatedFields.marketPrice;
     }
     Product.findOne({_id: productId})
         .exec((err, product) => {
@@ -142,8 +142,8 @@ function saveProduct(req, res) {
         if (err) return res.sendStatus(500);
         if (productExist) return res.sendStatus(409);
 
-        const marketPrice = price / stock;
-        const finalPrice = services.calcPrice(price / stock);
+        const marketPrice = price;
+        const finalPrice = price;
         if(ext) imagePath = path.join(config.PRODUCTS_IMAGES_PATH, image.convertToValidName(name) + ext);
         else imagePath = config.DEFAULT_PRODUCT_IMAGE;
 

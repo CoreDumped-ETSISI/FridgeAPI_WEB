@@ -31,7 +31,7 @@ function sendStock() {
         formData.append("name", $('#productName').val());
         formData.append("stock", $('#productStock').val());
         formData.append("price", $('#productPrice').val());
-        formData.append("units", $('#productUnits').val());
+        formData.append("units", "1");
         formData.append("image", image);
 
         requestXhr('PATCH', '/product/' + idProduct, formData, (res) => {
@@ -47,7 +47,6 @@ function resetFields() {
     $('#productName').val("");
     $('#productStock').val("");
     $('#productPrice').val("");
-    $('#productUnits').val("");
     $('#productImage').attr("src", "/images/default-product-image.jpg");
     if (croppieObj) croppieObj.destroy();
 }

@@ -93,11 +93,10 @@ function savePurchase(req, res) {
         User.findOne({ _id: req.user }).exec((err, user) => {
           if (err) return res.sendStatus(500);
           if (!user) return res.sendStatus(404);
-          if (user.balance - amount < -0.009) return res.sendStatus(402);
 
           purchase.save((err, purchaseStored) => {
             if (err) return res.sendStatus(500);
-            user.updateOne({ $inc: { balance: -amount } }, (err, userStored) => {
+            user.updateOne({ $inc: { balance: amount } }, (err, userStored) => {
               if (err) return res.sendStatus(500);
 
               for (let x = 0; x < products.length; x++) {
@@ -173,7 +172,7 @@ function deletePurchase(req, res) {
 
     User.findOneAndUpdate(
       { _id: purchase.userId },
-      { $inc: { balance: purchase.amount } }
+      { $inc: { balance: -purchase.amount } }
     ).exec((err, user) => {
       if (err) return res.sendStatus(500);
       purchase.remove();

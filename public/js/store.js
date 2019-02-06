@@ -201,36 +201,32 @@ function reloadCart() {
 
 function purchase() {
     if (products.length > 0 || offers.length > 0) {
-        if ((Math.round(total * 100) / 100) <= (Math.round(user.balance * 100) / 100)) {
-            let itemChain = "";
-            let offerItemChain = "";
+        let itemChain = "";
+        let offerItemChain = "";
 
-            if (products.length > 0){
-                for (let i = 0; i < products.length - 1; i++)
-                    itemChain += products[i]._id + ",";
-                itemChain = itemChain + products[products.length - 1]._id;
-            }
-
-            if (offers.length > 0){
-                for (let i = 0; i < offers.length - 1; i++)
-                    offerItemChain += offers[i]._id + ",";
-                offerItemChain = offerItemChain + offers[offers.length - 1]._id;
-            }
-
-            const data = {productList: itemChain, offerList: offerItemChain};
-
-            request('POST', '/purchase', data, (res) => {
-                products = [];
-                offers = [];
-                reloadCart();
-                getProfile();
-                getProductList();
-                getOfferList();
-                M.toast({html: 'Su compra se ha realizado correctamente', classes: 'green'});
-            });
-        } else {
-            M.toast({html: 'No tienes saldo suficiente para efectuar la compra', classes: 'orange'});
+        if (products.length > 0){
+            for (let i = 0; i < products.length - 1; i++)
+                itemChain += products[i]._id + ",";
+            itemChain = itemChain + products[products.length - 1]._id;
         }
+
+        if (offers.length > 0){
+            for (let i = 0; i < offers.length - 1; i++)
+                offerItemChain += offers[i]._id + ",";
+            offerItemChain = offerItemChain + offers[offers.length - 1]._id;
+        }
+
+        const data = {productList: itemChain, offerList: offerItemChain};
+
+        request('POST', '/purchase', data, (res) => {
+            products = [];
+            offers = [];
+            reloadCart();
+            getProfile();
+            getProductList();
+            getOfferList();
+            M.toast({html: 'Su compra se ha realizado correctamente', classes: 'green'});
+        });
     } else {
         M.toast({html: 'El carrito está vacío', classes: 'orange'});
     }
