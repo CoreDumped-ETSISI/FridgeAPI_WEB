@@ -48,4 +48,14 @@ router.get('/users/user-list', auth, admin, function (req, res, next) {
     res.render('admin/admin_user_list', {title: 'Express'});
 });
 
+/* OFFERS */
+
+router.get('/offers/add-new-offer', auth, admin, function (req, res, next) {
+    res.render('admin/admin_offer', {title: 'Express'});
+});
+
+router.get('/offers/update-offer', auth, admin, function (req, res, next) {
+    res.render('admin/admin_update_offer', {title: 'Express'});
+});
+
 module.exports = router;

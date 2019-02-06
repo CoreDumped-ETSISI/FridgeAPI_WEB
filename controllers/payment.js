@@ -59,7 +59,7 @@ function savePayment(req, res) {
                 if (!paymentStored) return res.sendStatus(500);
                 paymentStored.adminId = undefined;
 
-                user.update({$inc: {balance: paymentStored.amount}}, (err, userStored) => {
+                user.updateOne({$inc: {balance: paymentStored.amount}}, (err, userStored) => {
                     if (err) return res.sendStatus(503);
                     if (!userStored) return res.sendStatus(500); //TODO: Delete the paymentStored
 

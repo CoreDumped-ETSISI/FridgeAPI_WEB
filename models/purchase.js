@@ -11,6 +11,11 @@ const PurchaseSchema = Schema({
         product: {},
         quantity: Number
     }],
+    offerList: [{
+        _id: false,
+        offer: {},
+        quantity: Number
+    }],
     timestamp: {type: Date, default: Date.now}
 }, {versionKey: false});
 
