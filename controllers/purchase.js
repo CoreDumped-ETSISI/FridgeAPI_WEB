@@ -40,11 +40,9 @@ function getPurchaseListAll(req, res) {
 }
 
 function savePurchase(req, res) {
-  console.log(req.body)
   if (!req.body.productList && !req.body.offerList) return res.sendStatus(400);
   let idList = req.body.productList.split(",");
   let offersList = req.body.offerList.split(",");
-  console.log(`holi ${offersList.length}`)
 
   Offer.find({ _id: { $in: offersList } })
   .populate({
@@ -57,23 +55,15 @@ function savePurchase(req, res) {
     if (offersList.length < 1 && err) return res.sendStatus(500);
 
     productIdListGenerator(offers, offersList, req.body.productList).then(response => {
-      console.log(`list: ${response}`)
       let productIdList = response.split(",");
 
-      console.log(`productIdList: ${productIdList}`);
-      console.log(`only products: ${idList}`);
-
       Product.find({ _id: { $in: productIdList } }).exec(function(err, products) {
-        console.log("1")
         if (productIdList.length < 1 && err) return res.sendStatus(500);
-        console.log("2")
         if ( (!products || products.length === 0) && (!offers || offers.length === 0) ) return res.sendStatus(404);
-        console.log("3")
         let amount = 0;
         let productList = [];
         let offerList = [];
         if(offers){
-          console.log("hay ofertas")
           for (let x = 0; x < offers.length; x++) {
             let count = services.countOccurrences(offers[x]._id, offersList);
             amount += offers[x].price * count; 
@@ -81,7 +71,6 @@ function savePurchase(req, res) {
           }
         }
         if(products){
-          console.log("hay productos")
           for (let x = 0; x < products.length; x++) {
             let count = services.countOccurrences(products[x]._id, idList);
             if(count > 0){
@@ -108,7 +97,6 @@ function savePurchase(req, res) {
 
           purchase.save((err, purchaseStored) => {
             if (err) return res.sendStatus(500);
-            console.log(`cobrando: ${-amount}`)
             user.updateOne({ $inc: { balance: -amount } }, (err, userStored) => {
               if (err) return res.sendStatus(500);
 
@@ -130,9 +118,7 @@ function savePurchase(req, res) {
 
 function productIdListGenerator(offers, offerList, productList){
   return new Promise((resolve, reject) => {
-    console.log("productIdListGenerator")
-
-    if(offers && offers.length > 0){//TODO: falla por aqui
+    if(offers && offers.length > 0){
       let list = productList;
 
       for (let i = 0; i < offers.length; i++){
@@ -151,16 +137,12 @@ function productIdListGenerator(offers, offerList, productList){
         }
 
         if(i === offers.length-1){
-          console.log("resolving products + offer products")
           resolve(list);
         }
-        console.log(`loop ${i+j} of ${offers.length*count}`)
       }
     } else {
-      console.log("resolving only products")
       resolve(productList);
     }
-    console.log("productIdListGenerator END")
   });
 }
 
