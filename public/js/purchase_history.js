@@ -10,7 +10,6 @@ function initPage() {
 
 function getPurchaseList() {
     request('GET', '/purchase', null, (res) => {
-        console.log(`n purchases: ${res.length}`)
         for (let i = 0; i < res.length; i++) {
             $("#purchaseList").append(purchaseElement(res[i]));
         }

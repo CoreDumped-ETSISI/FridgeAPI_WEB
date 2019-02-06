@@ -69,10 +69,8 @@ function updateProduct(req, res) {
     }
 
     if (price && units) {
-        console.log('Price');
         if (!input.validFloat(price)) return res.sendStatus(400);
         if (!input.validInt(units)) return res.sendStatus(400);
-        console.log('Price2');
         updatedFields.marketPrice = price / units;
         updatedFields.price = services.calcPrice(updatedFields.marketPrice);
     }

@@ -133,7 +133,6 @@ function productIdListGenerator(offers, offerList, productList){
               }
             }
           }
-          console.log(`${offers[i].name}`)
         }
 
         if(i === offers.length-1){
