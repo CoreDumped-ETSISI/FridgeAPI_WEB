@@ -6,44 +6,15 @@ block content
             .nav-wrapper.container.center
                 a(href='/store')
                     div.logo-header(style="width:500px;height:100%;")
-
-    #userModal.modal(style="width: 50% !important;")
-        .modal-content
-            form
-                h4 Edit your user profile
-
-                .row.input-field
-                    .col.s12.l6
-                        img#userImage.circle.responsive-img.col.s12.m10.offset-m1(src="/images/default-product-image.jpg" style="object-fit: cover; margin-top: 15px;")
-                        input#fileElem(type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'userImage')")
-                    .col.s12.l6
-                        .row
-                            .input-field.col.s12
-                                input#user_name.validate(type="text")
-                                label(for="user_name") Name
-                        .row
-                            .input-field.col.s12
-                                input#user_pass.validate(type="password")
-                                label(for="user_pass") Password
-                        .row
-                            .input-field.col.s12
-                                input#user_repass.validate(type="password")
-                                label(for="user_repass") Repeat password
-                        .modal-footer.row
-                            .col.s12
-                                a.btn.modal-action.waves-effect.waves-green.white-text.full-width(href="#!" onclick="saveUser()" ) Save
-                            .col.s12
-                                a.btn.red.modal-action.modal-close.waves-effect.waves-red.white-text.full-width(href="#!") Cancel
-
+                    
     ul#slide-out.sidenav.sidenav-fixed
         li
             .user-view
                 .background
                 a#photo.modal-trigger(href="#userModal")
                 span.name
-                span.email
                 span.saldo-position.roboto-mono
-                    | Saldo:
+                    | Saldo: 
                     span#saldo
         block navbar-content
         li
@@ -56,7 +27,6 @@ block content
                     a.waves-effect.waves-light.btn.sidebar-button(href='/payment-history') Historial de pagos
             div.center
                 include switch.pug
-            // Cerrar sesión
             .action-btn.sidebar-margins(style="margin-bottom: 30px !important;")
                 a#logOut.waves-effect.waves-light.btn.sidebar-button(title='log out' onclick='deleteCredentials()')
                     | Cerrar sesi&oacute;n

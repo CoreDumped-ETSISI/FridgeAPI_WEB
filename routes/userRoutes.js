@@ -11,7 +11,7 @@ const uploader = require('../middlewares/imageUpload');
 //AUTH
 router.get('/', auth, userCtrl.getUserData);
 router.patch('/', auth, uploader.productImage.single('avatarImage'), userCtrl.updateUserData);
-router.post('/scale', /*auth, */userCtrl.scale);
+router.post('/scale', userCtrl.scale);
 
 //ADMIN
 router.get('/list', auth, admin, userCtrl.getUserList);
