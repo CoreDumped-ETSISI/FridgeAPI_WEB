@@ -16,6 +16,7 @@ const PurchaseSchema = Schema({
         offer: {},
         quantity: Number
     }],
+    cooked: {type: Number, default: 0},
     timestamp: {type: Date, default: Date.now}
 }, {versionKey: false});
 

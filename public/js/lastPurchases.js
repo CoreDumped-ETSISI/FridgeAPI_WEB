@@ -12,10 +12,11 @@ function initPage() {
     });
 
     getLastPurchasesList();
-    setInterval(getLastPurchasesList, 2000);
+    setInterval(getLastPurchasesList, 30000);
 }
 
 function getLastPurchasesList() {
+    M.toast({html: `Refrescando los pedidos`, classes: 'orange'});
     request('GET', 'purchase/recents', null, (res) => {
         if(!lastPurchasesList || !lastPurchasesList[0] || res[0]._id !== lastPurchasesList[0]._id) {
             lastPurchasesList = res;
@@ -26,6 +27,12 @@ function getLastPurchasesList() {
                 instance.open(i);
             }
         }
+    });
+}
+
+function setCooked(id) {
+    request('POST', `purchase/cooked/${id}`, null, (res) => {
+        M.toast({html: `Pedido cocinado: ${id}`, classes: 'green'});
     });
 }
 
@@ -55,7 +62,18 @@ function purchaseElement(purchase) {
 
     let temp = `<li class="collapsible-container">
     <div class="collapsible-header">
-    <img class="circle" width="48" style="width:48px; height: 48px;" src="${purchase.userId.avatarImage}"/><p style="padding-left: 10px;"><b>${purchase.userId.displayName}</b> ${datetime} Amount: ${purchase.amount.toFixed(2)} € </p></div>
+        <img class="circle" width="48" style="width:48px; height: 48px;" src="${purchase.userId.avatarImage}"/>
+        <p style="padding-left: 10px;">
+            <b>${purchase.userId.displayName}</b>
+             ${datetime} Amount: ${purchase.amount.toFixed(2)} € 
+        </p>
+        <div style="float: right;">
+            <label>
+                <input type="checkbox" onclick="setCooked('${purchase._id}')">
+                <span>Cocinado</span>
+            </label>
+        </div>
+    </div>
     <div class="collapsible-body">`;
 
     if(purchase.offerList.length > 0){

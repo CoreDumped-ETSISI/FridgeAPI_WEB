@@ -12,5 +12,6 @@ router.get('/listAll', auth, admin, purchaseCtrl.getPurchaseListAll);
 router.get('/recents', purchaseCtrl.getLastPurchases);
 router.get('/id/:id', auth, purchaseCtrl.getPurchase);
 router.delete('/id/:id', auth, admin, purchaseCtrl.deletePurchase);
+router.post('/cooked/:id', purchaseCtrl.setCooked);
 
 module.exports = router;

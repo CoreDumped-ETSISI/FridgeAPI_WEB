@@ -145,8 +145,7 @@ function productIdListGenerator(offers, offerList, productList){
 }
 
 function getLastPurchases(req, res) {
-  Purchase.find({})
-    .sort({ timestamp: -1 })
+  Purchase.find({cooked: 0})
     .limit(10)
     .populate("userId")
     .exec(function(err, purchases) {
@@ -181,11 +180,28 @@ function deletePurchase(req, res) {
   });
 }
 
+function setCooked(req, res){
+  const purchaseId = req.params.id;
+  if (!input.validId(purchaseId)) return res.sendStatus(400);
+
+  Purchase.findOne({ _id: purchaseId }).exec((err, purchase) => {
+    if (err) return res.sendStatus(500);
+    if (!purchase) return res.sendStatus(404);
+
+    purchase.cooked = true;
+    purchase.save((err, purchaseStored) => {
+      if (err) return res.sendStatus(500);
+      return res.sendStatus(200);
+    })
+  });
+}
+
 module.exports = {
   getPurchase,
   getPurchaseList,
   getPurchaseListAll,
   getLastPurchases,
   savePurchase,
-  deletePurchase
+  deletePurchase,
+  setCooked
 };
