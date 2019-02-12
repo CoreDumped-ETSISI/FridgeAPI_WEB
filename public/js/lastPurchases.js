@@ -18,7 +18,7 @@ function initPage() {
 function getLastPurchasesList() {
     M.toast({html: `Refrescando los pedidos`, classes: 'orange'});
     request('GET', 'purchase/recents', null, (res) => {
-        if(!lastPurchasesList || !lastPurchasesList[0] || res[0]._id !== lastPurchasesList[0]._id) {
+        if(res && res[0] && (!lastPurchasesList || !lastPurchasesList[0] || res[0]._id !== lastPurchasesList[0]._id)) {
             lastPurchasesList = res;
             let purchaseList = $("#purchaseList");
             purchaseList.empty();
