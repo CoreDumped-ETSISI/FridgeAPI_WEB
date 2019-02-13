@@ -18,7 +18,7 @@ function initPage() {
 function getLastPurchasesList() {
     M.toast({html: `Refrescando los pedidos`, classes: 'orange'});
     request('GET', 'purchase/recents', null, (res) => {
-        if(res && res[0] && (!lastPurchasesList || !lastPurchasesList[0] || res[0]._id !== lastPurchasesList[0]._id)) {
+        if(res && res[0] && (!lastPurchasesList || !lastPurchasesList[0] || res[res.length]._id !== lastPurchasesList[lastPurchasesList.length]._id)) {
             lastPurchasesList = res;
             let purchaseList = $("#purchaseList");
             purchaseList.empty();
@@ -26,6 +26,9 @@ function getLastPurchasesList() {
                 purchaseList.append(purchaseElement(res[i]));
                 instance.open(i);
             }
+        } else if (res && res.length === 0) {
+            let purchaseList = $("#purchaseList");
+            purchaseList.empty();
         }
     });
 }
