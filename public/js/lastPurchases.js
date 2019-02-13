@@ -26,7 +26,7 @@ function getLastPurchasesList() {
                 purchaseList.append(purchaseElement(res[i]));
                 instance.open(i);
             }
-        } else if (res && res.length === 0) {
+        } else if (res && !res[0]) {
             let purchaseList = $("#purchaseList");
             purchaseList.empty();
         }
