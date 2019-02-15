@@ -96,16 +96,13 @@ function savePurchase(req, res) {
 
           purchase.save((err, purchaseStored) => {
             if (err) return res.sendStatus(500);
-            user.updateOne({ $inc: { balance: amount } }, (err, userStored) => {
+            user.updateOne({ $inc: { balance: amount } }, async (err, userStored) => {
               if (err) return res.sendStatus(500);
 
               for (let x = 0; x < products.length; x++) {
-                const count = services.countOccurrences(products[x]._id, productIdList);
-                products[x].updateOne(
-                  { $inc: { stock: -count } },
-                  (err, userStored) => {}
-                );
+                await updateProdStock(products[x], productIdList);
               }
+
               return res.status(200).send(purchaseStored);
             });
           });
@@ -113,6 +110,17 @@ function savePurchase(req, res) {
       });
     })
   });
+}
+
+function updateProdStock(product, productIdList) {
+  const count = services.countOccurrences(product._id, productIdList);
+  product.updateOne(
+    { $inc: { stock: -count } },
+    (err, productStored) => {
+      if (err) return res.sendStatus(500);
+      if (!productStored) return res.sendStatus(404);
+    }
+  )
 }
 
 function productIdListGenerator(offers, offerList, productList){
