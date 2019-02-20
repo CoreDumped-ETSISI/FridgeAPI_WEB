@@ -4,6 +4,7 @@ let offerList;
 let products = [];
 let offers = [];
 let total = 0;
+let buying = false;
 
 initPage();
 
@@ -200,35 +201,39 @@ function reloadCart() {
 }
 
 function purchase() {
-    if (products.length > 0 || offers.length > 0) {
-        let itemChain = "";
-        let offerItemChain = "";
+    if (!buying) {
+        if (products.length > 0 || offers.length > 0) {
+            let itemChain = "";
+            let offerItemChain = "";
 
-        if (products.length > 0){
-            for (let i = 0; i < products.length - 1; i++)
-                itemChain += products[i]._id + ",";
-            itemChain = itemChain + products[products.length - 1]._id;
+            if (products.length > 0){
+                for (let i = 0; i < products.length - 1; i++)
+                    itemChain += products[i]._id + ",";
+                itemChain = itemChain + products[products.length - 1]._id;
+            }
+
+            if (offers.length > 0){
+                for (let i = 0; i < offers.length - 1; i++)
+                    offerItemChain += offers[i]._id + ",";
+                offerItemChain = offerItemChain + offers[offers.length - 1]._id;
+            }
+
+            const data = {productList: itemChain, offerList: offerItemChain};
+
+            request('POST', '/purchase', data, (res) => {
+                products = [];
+                offers = [];
+                reloadCart();
+                getProfile();
+                getProductList();
+                getOfferList();
+                M.toast({html: 'Su compra se ha realizado correctamente', classes: 'green'});
+            });
+        } else {
+            M.toast({html: 'El carrito está vacío', classes: 'orange'});
         }
-
-        if (offers.length > 0){
-            for (let i = 0; i < offers.length - 1; i++)
-                offerItemChain += offers[i]._id + ",";
-            offerItemChain = offerItemChain + offers[offers.length - 1]._id;
-        }
-
-        const data = {productList: itemChain, offerList: offerItemChain};
-
-        request('POST', '/purchase', data, (res) => {
-            products = [];
-            offers = [];
-            reloadCart();
-            getProfile();
-            getProductList();
-            getOfferList();
-            M.toast({html: 'Su compra se ha realizado correctamente', classes: 'green'});
-        });
     } else {
-        M.toast({html: 'El carrito está vacío', classes: 'orange'});
+    M.toast({ html: "Compra en proceso", classes: "orange" });
     }
 }
 
