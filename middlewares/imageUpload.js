@@ -30,10 +30,25 @@ function imageFormat(file) {
     return ext;
 }
 
-function saveToDisk(file, imagePath, next) {
+async function saveToDisk(file, imagePath, next) {
     if(!next) next = () => {};
     imagePath = path.join('./public', imagePath);
+    await checkIfExistsPath(imagePath);
     fs.writeFile(imagePath, file.buffer, 'binary', next);
+}
+
+function checkIfExistsPath(url) {
+    var to = url.lastIndexOf('\\');
+    to = to == -1 ? url.length : to + 1;
+    url = url.substring(0, to);
+
+    if (!fs.existsSync(url)) {
+        console.log(`The path not exists. Path: ${url}`);
+        fs.mkdirSync(url);
+        console.log(`The path was created. Path: ${url}`);
+    } else {
+        console.log(`The path exists. Path: ${url}`);
+    }
 }
 
 function convertToValidName(imageName) {
