@@ -38,17 +38,17 @@ async function saveToDisk(file, imagePath, next) {
 }
 
 function checkIfExistsPath(url) {
-    var to = url.lastIndexOf('\\');
-    to = to == -1 ? url.length : to + 1;
-    url = url.substring(0, to);
+    return new Promise((resolve) => {
+        var to = url.lastIndexOf('\\');
+        to = to == -1 ? url.length : to + 1;
+        let path = url.substring(0, to);
 
-    if (!fs.existsSync(url)) {
-        console.log(`The path not exists. Path: ${url}`);
-        fs.mkdirSync(url);
-        console.log(`The path was created. Path: ${url}`);
-    } else {
-        console.log(`The path exists. Path: ${url}`);
-    }
+        if (!fs.existsSync(path)) {
+            fs.mkdirSync(path);
+        }
+
+        resolve();
+    });
 }
 
 function convertToValidName(imageName) {
