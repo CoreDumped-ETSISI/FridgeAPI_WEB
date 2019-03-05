@@ -139,7 +139,7 @@ main {
   color: white;
 }
 
-#cartList {
+.cartList {
   padding: 15px;
   color: #ccc;
   overflow-y: auto;
@@ -150,7 +150,23 @@ main {
   box-shadow: none;
 }
 
-#cartList img {
+@media only screen and (max-width: 600px) {
+  .invisible {
+    display: none;
+  }
+}
+
+.max {
+    max-width: 100%;
+    position: relative;
+}
+
+.inside-max {
+    max-width: 100%;
+    width: 100%;
+}
+
+.cartList img {
   border-radius: 50%;
 }
 
@@ -160,6 +176,22 @@ main {
 
 .cartElement {
   font-size: 1.2em;
+  margin: 0.3rem 0rem 0.3rem 0rem;
+}
+
+.cartText {
+  width: 65%;
+  padding-left: 1em;
+}
+
+.cartImage {
+  width: 15%;
+  margin-left: 5%;
+  object-fit: contain;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .header {
@@ -530,9 +562,10 @@ span.badge.new {
 }
 
 .max-height-admin-prodSelector {
-    overflow-y: auto;
-    height: 40vh;
-    max-height: 40vh;
-    border-radius: 7px;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  overflow-y: auto;
+  height: 40vh;
+  max-height: 40vh;
+  border-radius: 7px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
 }

@@ -9,6 +9,8 @@ const User = require("../models/user");
 
 const rtn = require("../middlewares/apiResults");
 
+const dict = require("../middlewares/dictionary");
+
 function getPurchase(req, res) {
   let purchaseId = req.params.id;
   if (!input.validId(purchaseId)) return rtn.status(res, 400);
@@ -28,7 +30,7 @@ function getPurchaseList(req, res) {
     .sort({ timestamp: -1 })
     .exec((err, purchases) => {
       if (err) return rtn.intrServErr(res);
-      if (!purchases || purchases.length === 0) return rtn.notFound(res, dict.objs.purchase);
+      if (!purchases || purchases.length === 0) return rtn.status(res, 404);
       return rtn.obj(res, 200, purchases);
     });
 }

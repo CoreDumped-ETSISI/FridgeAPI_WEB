@@ -31,7 +31,7 @@ function getLastPurchasesList() {
 
 function tableHeader(itemName){
     return `<table><thead><tr>
-        <td></td>
+        <td class="invisible"></td>
         <td>${itemName}</td>
         <td>Quantity</td>
         <td>Unit price</td>
@@ -53,9 +53,9 @@ const collapsibleFooter = '</div></li>';
 function purchaseElement(purchase) {
     const datetime = new Date(purchase.timestamp).toLocaleString('es-ES');
 
-    let temp = `<li class="collapsible-container">
+    let temp = `<li class="collapsible-container inside-max">
     <div class="collapsible-header">
-    <img class="circle" width="48" style="width:48px; height: 48px;" src="${purchase.userId.avatarImage}"/><p style="padding-left: 10px;"><b>${purchase.userId.displayName}</b> ${datetime} Amount: ${purchase.amount.toFixed(2)} € </p></div>
+    <img class="circle invisible" width="48" style="width:48px; height: 48px;" src="${purchase.userId.avatarImage}"/><p style="padding-left: 10px;"><b>${purchase.userId.displayName}</b> ${datetime} Amount: ${purchase.amount.toFixed(2)} € </p></div>
     <div class="collapsible-body">`;
 
     if(purchase.offerList.length > 0){
@@ -66,7 +66,7 @@ function purchaseElement(purchase) {
             product.quantity = purchase.offerList[e].quantity;
 
             temp += '<tr>' +
-                '<td><img  class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
+                '<td class="invisible"><img class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
                 '<td>' + product.name + '</td>' +
                 '<td>' + product.quantity + '</td>' +
                 '<td>' + product.price.toFixed(2) + ' €</td>' +
@@ -85,7 +85,7 @@ function purchaseElement(purchase) {
             product.quantity = purchase.productList[e].quantity;
 
             temp += '<tr>' +
-                '<td><img  class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
+                '<td class="invisible"><img  class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
                 '<td>' + product.name + '</td>' +
                 '<td>' + product.quantity + '</td>' +
                 '<td>' + product.price.toFixed(2) + ' €</td>' +

@@ -74,8 +74,8 @@ function reloadCart() {
 
 function createCartElement(product, index) {
     $("#cartList").append('<li class="cartElement valign-wrapper">' +
-        '    <img class="responsive-img" src="' + product.image + '" style="width: 15%; margin-left: 5%; object-fit: contain;">' +
-        '    <span style="width: 65%; padding-left: 1em;">' + product.name + '</span>' +
-        '    <i class="material-icons" onclick="eraseCartElement('+ index + ')" style="cursor: pointer;">clear</i>' +
+        '    <img class="responsive-img cartImage" src="' + product.image + '"">' +
+        '    <span class="cartText">' + product.name + '</span>' +
+        '    <i class="material-icons pointer" onclick="eraseCartElement('+ index + ')">clear</i>' +
         '</li>');
 }
