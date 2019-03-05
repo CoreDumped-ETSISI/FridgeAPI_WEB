@@ -4,6 +4,8 @@ const token = require('../services/token');
 const User = require('../models/user');
 const config = require('../config');
 
+const rtn = require('./apiResults');
+
 function isAuth(req, res, next) {
     if (req.cookies && req.cookies.token) {
         req.headers.authorization = "Bearer " + req.cookies.token;
@@ -19,7 +21,7 @@ function isAuth(req, res, next) {
         .then(response => {
             User.findOne({_id: response})
                 .exec((err, user) => {
-                    if (err) return res.status(500).send({ message: 'Internal error'});
+                    if (err) return rtn.intrServErr(res);
                     if (!user) return res.status(401).send({ message: 'Unauthorized'});
                     if (config.EMAIL_VERIFICATION && user.status !== 'Verified') return res.status(401).send({ message: 'Unauthorized'});
 

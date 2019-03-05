@@ -7,26 +7,27 @@ const config = require('../config');
 
 const path = require('path');
 const image = require('../middlewares/imageUpload');
+const rtn = require("../middlewares/apiResults");
 
 function getProduct(req, res) {
     let productId = req.params.id;
-    if (!input.validId(productId)) return res.sendStatus(400);
+    if (!input.validId(productId)) return rtn.status(res, 400);
 
     Product.findOne({_id: productId})
         .select('-marketPrice')
         .exec((err, product) => {
-            if (err) return res.sendStatus(500);
-            if (!product) return res.sendStatus(404);
-            res.status(200).send(product)
+            if (err) return rtn.intrServErr(res);
+            if (!product) return rtn.notFound(res, dict.objs.product);
+            rtn.obj(res, 200, product)
         })
 }
 
 function getProductList(req, res) {
     Product.find({})
         .exec((err, products) => {
-            if (err) return res.sendStatus(500);
-            if (!products) return res.sendStatus(404);
-            return res.status(200).send(products)
+            if (err) return rtn.intrServErr(res);
+            if (!products) return rtn.notFound(res, dict.objs.product);
+            return rtn.obj(res, 200, products)
         })
 }
 
@@ -34,15 +35,15 @@ function getAvailableProductList(req, res) {
     Product.find({stock: {$gt: 0}})
         .select('-marketPrice')
         .exec((err, products) => {
-            if (err) return res.sendStatus(500);
-            if (!products) return res.sendStatus(404);
-            return res.status(200).send(products)
+            if (err) return rtn.intrServErr(res);
+            if (!products) return rtn.notFound(res, dict.objs.product);
+            return rtn.obj(res, 200, products)
         })
 }
 
 function updateProduct(req, res) {
     const productId = req.params.id;
-    if (!input.validId(productId)) return res.sendStatus(400);
+    if (!input.validId(productId)) return rtn.status(res, 400);
 
     const name = req.body.name;
     const price = req.body.price;
@@ -55,29 +56,29 @@ function updateProduct(req, res) {
         !units &&
         !stock &&
         !ext)
-        return res.sendStatus(400);
+        return rtn.status(res, 400);
 
     let updatedFields = {};
     if (name) {
-        if (!input.validProductName(name)) return res.sendStatus(400);
+        if (!input.validProductName(name)) return rtn.status(res, 400);
         updatedFields.name = name;
     }
 
     if (stock) {
-        if (!input.validInt(stock)) return res.sendStatus(400);
+        if (!input.validInt(stock)) return rtn.status(res, 400);
         updatedFields.stock = stock;
     }
 
     if (price && units) {
-        if (!input.validFloat(price)) return res.sendStatus(400);
-        if (!input.validInt(units)) return res.sendStatus(400);
+        if (!input.validFloat(price)) return rtn.status(res, 400);
+        if (!input.validInt(units)) return rtn.status(res, 400);
         updatedFields.marketPrice = price / units;
         updatedFields.price = services.calcPrice(updatedFields.marketPrice);
     }
     Product.findOne({_id: productId})
         .exec((err, product) => {
-            if (err) return res.sendStatus(500);
-            if (!product || product.length === 0) return res.sendStatus(404);
+            if (err) return rtn.intrServErr(res);
+            if (!product || product.length === 0) return rtn.notFound(res, dict.objs.product);
 
             let imagePath = null;
             if(ext){
@@ -90,38 +91,38 @@ function updateProduct(req, res) {
             }
             product.set(updatedFields);
             product.save((err, productStored) => {
-                if (err) return res.sendStatus(500);
-                return res.status(200).send(productStored);
+                if (err) return rtn.intrServErr(res);
+                return rtn.obj(res, 200, productStored);
             })
         })
 }
 
 function addStock(req, res) {
     const productId = req.params.id;
-    if (!input.validId(productId)) return res.sendStatus(400);
+    if (!input.validId(productId)) return rtn.status(res, 400);
 
     const stock = req.body.stock;
 
     if (!stock)
-        return res.sendStatus(400);
+        return rtn.status(res, 400);
 
     let updatedFields = {};
 
     if (stock) {
-        if (!input.validInt(stock)) return res.sendStatus(400);
+        if (!input.validInt(stock)) return rtn.status(res, 400);
     }
 
     Product.findOne({_id: productId})
         .exec((err, product) => {
-            if (err) return res.sendStatus(500);
-            if (!product || product.length === 0) return res.sendStatus(404);
+            if (err) return rtn.intrServErr(res);
+            if (!product || product.length === 0) return rtn.notFound(res, dict.objs.product);
 
             updatedFields.stock = (parseInt(product.stock) + parseInt(stock)).toString();
 
             product.set(updatedFields);
             product.save((err, productStored) => {
-                if (err) return res.sendStatus(500);
-                return res.status(200).send(productStored);
+                if (err) return rtn.intrServErr(res);
+                return rtn.obj(res, 200, productStored);
             })
         })
 }
@@ -136,11 +137,11 @@ function saveProduct(req, res) {
     if (!input.validProductName(name) ||
         !input.validFloat(price) ||
         !input.validInt(stock))
-        return res.sendStatus(400);
+        return rtn.status(res, 400);
 
     Product.findOne({name: name}, (err, productExist) => {
-        if (err) return res.sendStatus(500);
-        if (productExist) return res.sendStatus(409);
+        if (err) return rtn.intrServErr(res);
+        if (productExist) return rtn.status(res, 409);
 
         const marketPrice = price / stock;
         const finalPrice = services.calcPrice(price / stock);
@@ -156,22 +157,22 @@ function saveProduct(req, res) {
         });
 
         product.save((err, productStored) => {
-            if (err) return res.sendStatus(500);
+            if (err) return rtn.intrServErr(res);
             if(ext) image.saveToDisk(req.file, imagePath, null);
-            return res.status(200).send(productStored)
+            return rtn.obj(res, 200, productStored)
         })
     })
 }
 
 function deleteProduct(req, res) {
     const productId = req.params.id;
-    if (!input.validId(productId)) return res.sendStatus(400);
+    if (!input.validId(productId)) return rtn.status(res, 400);
 
     Product.remove({_id: productId})
         .exec((err, product) => {
-            if (err) return res.sendStatus(500);
-            if (!product) return res.sendStatus(404);
-            return res.sendStatus(200)
+            if (err) return rtn.intrServErr(res);
+            if (!product) return rtn.notFound(res, dict.objs.product);
+            return rtn.status(res, 200)
         })
 }
 
