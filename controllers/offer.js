@@ -8,47 +8,48 @@ const config = require("../config");
 
 const path = require("path");
 const image = require("../middlewares/imageUpload");
+const rtn = require("../middlewares/apiResults");
+
+const dict = require('../middlewares/dictionary');
+
+const populateOfferProds = {
+  path: "products.product",
+  populate: {
+    path: "product",
+    model: "Product"
+  }
+};
 
 function getOffer(req, res) {
   let offerId = req.params.id;
-  if (!input.validId(offerId)) return res.sendStatus(400);
+  if (!input.validId(offerId)) return rtn.status(res, 400);
 
-  Offer.findOne({ _id: offerId }).exec((err, offer) => {
-    if (err) return res.sendStatus(500);
-    if (!offer) return res.sendStatus(404);
-    res.status(200).send(offer);
+  Offer.findOne({ _id: offerId })
+    .populate(populateOfferProds)
+    .exec((err, offer) => {
+    if (err) return rtn.intrServErr(res);
+    if (!offer) return rtn.notFound(res, dict.objs.offer);
+    rtn.obj(res, 200, offer);
   });
 }
 
 function getOfferList(req, res) {
   Offer.find()
-    .populate({
-      path: "products.product",
-      populate: {
-        path: "product",
-        model: "Product"
-      }
-    })
+    .populate(populateOfferProds)
     .exec((err, offers) => {
-      if (err) return res.sendStatus(500);
-      if (!offers) return res.sendStatus(404);
-      return res.status(200).send(offers);
+      if (err) return rtn.intrServErr(res);
+      if (!offers) return rtn.notFound(res, dict.objs.offer);
+      return rtn.obj(res, 200, offers);
     });
 }
 
 function getAvailableOfferList(req, res) {
   //TODO: check products
   Offer.find()
-    .populate({
-      path: "products.product",
-      populate: {
-        path: "product",
-        model: "Product"
-      }
-    })
+    .populate(populateOfferProds)
     .exec((err, offers) => {
-      if (err) return res.sendStatus(500);
-      if (!offers) return res.sendStatus(404);
+      if (err) return rtn.intrServErr(res);
+      if (!offers) return rtn.notFound(res, dict.objs.offer);
 
       let availableOffers = [];
 
@@ -60,7 +61,7 @@ function getAvailableOfferList(req, res) {
           }
 
           if (i === response.length - 1) {
-            return res.status(200).send(availableOffers);
+            return rtn.obj(res, 200, availableOffers);
           }
         }
       });
@@ -119,31 +120,31 @@ function calculateAvailableStock(offerItem) {
 
 function updateOffer(req, res) {
   const offerId = req.params.id;
-  if (!input.validId(offerId)) return res.sendStatus(400);
+  if (!input.validId(offerId)) return rtn.status(res, 400);
 
   const name = req.body.name;
   const price = req.body.price;
   const ext = image.obtainExt(req.file);
 
-  if (!req.body.products) return res.sendStatus(400);
+  if (!req.body.products) return rtn.msgBadReq(res, dict.errMsgs.productsRequired);
   const idList = req.body.products.split(",");
 
-  if (!name && !price && !ext && !idList) return res.sendStatus(400);
+  if (!name && !price && !ext && !idList) return rtn.msgBadReq(res, dict.errMsgs.dataRequired);
 
   let updatedFields = {};
   if (name) {
-    if (!input.validProductName(name)) return res.sendStatus(400);
+    if (!input.validProductName(name)) return rtn.msgNotValid(res, 400, dict.items.productName);
     updatedFields.name = name;
   }
 
   if (price) {
-    if (!input.validFloat(price)) return res.sendStatus(400);
+    if (!input.validFloat(price)) return rtn.msgNotValid(res, 400, dict.items.price);
     updatedFields.price = price;
   }
 
   Product.find({ _id: { $in: idList } }).exec(function(err, products) {
-    if (err) return res.sendStatus(500);
-    if (!products || products.length === 0) return res.sendStatus(404);
+    if (err) return rtn.intrServErr(res);
+    if (!products || products.length === 0) return rtn.notFound(res, dict.objs.product);
     let productList = [];
     for (let x = 0; x < products.length; x++) {
       let count = services.countOccurrences(products[x]._id, idList);
@@ -155,9 +156,9 @@ function updateOffer(req, res) {
     }
 
     Offer.findOne({ _id: offerId }).exec((err, offer) => {
-      if (err) return res.sendStatus(500);
+      if (err) return rtn.intrServErr(res);
 
-      if (!offer || offer.length === 0) return res.sendStatus(404);
+      if (!offer || offer.length === 0) return rtn.notFound(res, dict.objs.offer);
 
       let imagePath = null;
       if (ext) {
@@ -176,9 +177,10 @@ function updateOffer(req, res) {
       }
       offer.set(updatedFields);
       offer.save((err, offerStored) => {
-        if (err) return res.sendStatus(500);
+        if (err) return rtn.intrServErr(res);
+        if(!offerStored) return rtn.notFound(res, dict.objs.offer)
 
-        return res.status(200).send(offerStored);
+        return rtn.obj(res, 200, offerStored);
       });
     });
   });
@@ -190,15 +192,15 @@ function saveOffer(req, res) {
   const ext = image.obtainExt(req.file);
   let imagePath = null;
 
-  if (!req.body.products) return res.sendStatus(400);
+  if (!req.body.products) return rtn.status(res, 400);
   const idList = req.body.products.split(",");
 
   if (!input.validProductName(name) || !input.validFloat(price))
-    return res.sendStatus(400);
+    return rtn.msgNotValid(res, 400, dict.items.nameOrPrice);
 
   Product.find({ _id: { $in: idList } }).exec(function(err, products) {
-    if (err) return res.sendStatus(500);
-    if (!products || products.length === 0) return res.sendStatus(404);
+    if (err) return rtn.intrServErr(res);
+    if (!products || products.length === 0) return rtn.notFound(res, dsit.objs.product);
     let productList = [];
     for (let x = 0; x < products.length; x++) {
       let count = services.countOccurrences(products[x]._id, idList);
@@ -206,8 +208,8 @@ function saveOffer(req, res) {
     }
 
     Offer.findOne({ name: name }, (err, offerExist) => {
-      if (err) return res.sendStatus(500);
-      if (offerExist) return res.sendStatus(409);
+      if (err) return rtn.intrServErr(res);
+      if (offerExist) return rtn.status(res, 409);
 
       if (ext)
         imagePath = path.join(
@@ -223,9 +225,9 @@ function saveOffer(req, res) {
         products: productList
       });
       offer.save((err, offerStored) => {
-        if (err) return res.sendStatus(500);
+        if (err) return rtn.intrServErr(res);
         if (ext) image.saveToDisk(req.file, imagePath, null);
-        return res.status(200).send(offerStored);
+        return rtn.obj(res, 200, offerStored);
       });
     });
   });
@@ -233,12 +235,12 @@ function saveOffer(req, res) {
 
 function deleteOffer(req, res) {
   const offerId = req.params.id;
-  if (!input.validId(offerId)) return res.sendStatus(400);
+  if (!input.validId(offerId)) return rtn.status(res, 400);
 
   Offer.remove({ _id: offerId }).exec((err, offer) => {
-    if (err) return res.sendStatus(500);
-    if (!offer) return res.sendStatus(404);
-    return res.sendStatus(200);
+    if (err) return rtn.intrServErr(res);
+    if (!offer) return rtn.notFound(res, dict.objs.offer);
+    return rtn.success(res, dict.msg200.offerDeleted);
   });
 }
 

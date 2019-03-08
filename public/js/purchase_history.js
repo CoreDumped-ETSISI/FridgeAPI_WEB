@@ -18,7 +18,7 @@ function getPurchaseList() {
 
 function tableHeader(itemName){
     return `<table><thead><tr>
-        <td></td>
+        <td class="invisible"></td>
         <td>${itemName}</td>
         <td>Quantity</td>
         <td>Unit price</td>
@@ -52,7 +52,7 @@ function purchaseElement(purchase) {
             product.quantity = purchase.offerList[e].quantity;
 
             temp += '<tr>' +
-                '<td><img  class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
+                '<td class="invisible"><img class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
                 '<td>' + product.name + '</td>' +
                 '<td>' + product.quantity + '</td>' +
                 '<td>' + product.price.toFixed(2) + ' €</td>' +
@@ -71,7 +71,7 @@ function purchaseElement(purchase) {
             product.quantity = purchase.productList[e].quantity;
 
             temp += '<tr>' +
-                '<td><img  class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
+                '<td class="invisible"><img class="circle" width="250" src="' + product.image + '" style="width:48px;"></td>' +
                 '<td>' + product.name + '</td>' +
                 '<td>' + product.quantity + '</td>' +
                 '<td>' + product.price.toFixed(2) + ' €</td>' +

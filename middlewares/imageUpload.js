@@ -30,10 +30,25 @@ function imageFormat(file) {
     return ext;
 }
 
-function saveToDisk(file, imagePath, next) {
+async function saveToDisk(file, imagePath, next) {
     if(!next) next = () => {};
     imagePath = path.join('./public', imagePath);
+    await checkIfExistsPath(imagePath);
     fs.writeFile(imagePath, file.buffer, 'binary', next);
+}
+
+function checkIfExistsPath(url) {
+    return new Promise((resolve) => {
+        var to = url.lastIndexOf('\\');
+        to = to == -1 ? url.length : to + 1;
+        let path = url.substring(0, to);
+
+        if (!fs.existsSync(path)) {
+            fs.mkdirSync(path);
+        }
+
+        resolve();
+    });
 }
 
 function convertToValidName(imageName) {

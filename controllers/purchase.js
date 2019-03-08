@@ -7,16 +7,20 @@ const Product = require("../models/product");
 const Offer = require("../models/offer");
 const User = require("../models/user");
 
+const rtn = require("../middlewares/apiResults");
+
+const dict = require("../middlewares/dictionary");
+
 function getPurchase(req, res) {
   let purchaseId = req.params.id;
-  if (!input.validId(purchaseId)) return res.sendStatus(400);
+  if (!input.validId(purchaseId)) return rtn.status(res, 400);
 
   Purchase.findOne({ _id: purchaseId, userId: req.user })
     .select("-userId") //TODO: Overwrite function toJSON to avoid this
     .exec((err, purchase) => {
-      if (err) return res.sendStatus(500);
-      if (!purchase) return res.sendStatus(404);
-      return res.status(200).send(purchase);
+      if (err) return rtn.intrServErr(res);
+      if (!purchase) return rtn.notFound(res, dict.objs.purchase);
+      return rtn.obj(res, 200, purchase);
     });
 }
 
@@ -25,22 +29,22 @@ function getPurchaseList(req, res) {
     .select("-userId")
     .sort({ timestamp: -1 })
     .exec((err, purchases) => {
-      if (err) return res.sendStatus(500);
-      if (!purchases || purchases.length === 0) return res.sendStatus(404);
-      return res.status(200).send(purchases);
+      if (err) return rtn.intrServErr(res);
+      if (!purchases || purchases.length === 0) return rtn.status(res, 404);
+      return rtn.obj(res, 200, purchases);
     });
 }
 
 function getPurchaseListAll(req, res) {
   Purchase.find({}, (err, purchases) => {
-    if (err) return res.sendStatus(500);
-    if (!purchases || purchases.length === 0) return res.sendStatus(404);
-    return res.status(200).send(purchases);
+    if (err) return rtn.intrServErr(res);
+    if (!purchases || purchases.length === 0) return rtn.notFound(res, dict.objs.purchase);
+    return rtn.obj(res, 200, purchases);
   });
 }
 
 function savePurchase(req, res) {
-  if (!req.body.productList && !req.body.offerList) return res.sendStatus(400);
+  if (!req.body.productList && !req.body.offerList) return rtn.status(res, 400);
   let idList = req.body.productList.split(",");
   let offersList = req.body.offerList.split(",");
 
@@ -52,14 +56,15 @@ function savePurchase(req, res) {
       model: "Product"
     }
   }).exec(function(err, offers) {
-    if (offersList.length < 1 && err) return res.sendStatus(500);
+    if (offersList.length < 1 && err) return rtn.intrServErr(res);
 
     productIdListGenerator(offers, offersList, req.body.productList).then(response => {
       let productIdList = response.split(",");
 
       Product.find({ _id: { $in: productIdList } }).exec(function(err, products) {
-        if (productIdList.length < 1 && err) return res.sendStatus(500);
-        if ( (!products || products.length === 0) && (!offers || offers.length === 0) ) return res.sendStatus(404);
+        if (productIdList.length < 1 && err) return rtn.intrServErr(res);
+        if ( (!products || products.length === 0) && (!offers || offers.length === 0) )
+          return rtn.notFound(res, dict.objs.productOrOffer);
         let amount = 0;
         let productList = [];
         let offerList = [];
@@ -75,14 +80,14 @@ function savePurchase(req, res) {
             let count = services.countOccurrences(products[x]._id, idList);
             if(count > 0){
               if (count > products[x].stock) {
-                return res.sendStatus(400);
+                return rtn.status(res, 400);
               }
               amount += products[x].price * count;
               productList.push({ product: products[x], quantity: count });
             }
           }
         }
-        if (amount < 0.01) return res.sendStatus(400);
+        if (amount < 0.01) return rtn.status(res, 400);
         const purchase = new Purchase({
           userId: req.user,
           amount: amount,
@@ -91,20 +96,20 @@ function savePurchase(req, res) {
         });
 
         User.findOne({ _id: req.user }).exec((err, user) => {
-          if (err) return res.sendStatus(500);
-          if (!user) return res.sendStatus(404);
-          if (user.balance - amount < -0.009) return res.sendStatus(402);
+          if (err) return rtn.intrServErr(res);
+          if (!user) return rtn.notFound(res, dict.objs.user);
+          if (user.balance - amount < -0.009) return rtn.status(res, 402);
 
           purchase.save((err, purchaseStored) => {
-            if (err) return res.sendStatus(500);
+            if (err) return rtn.intrServErr(res);
             user.updateOne({ $inc: { balance: -amount } }, async (err, userStored) => {
-              if (err) return res.sendStatus(500);
+              if (err) return rtn.intrServErr(res);
 
               for (let x = 0; x < products.length; x++) {
                 await updateProdStock(products[x], productIdList);
               }
 
-              return res.status(200).send(purchaseStored);
+              return rtn.obj(res, 200, purchaseStored);
             });
           });
         });
@@ -118,8 +123,8 @@ function updateProdStock(product, productIdList) {
   product.updateOne(
     { $inc: { stock: -count } },
     (err, productStored) => {
-      if (err) return res.sendStatus(500);
-      if (!productStored) return res.sendStatus(404);
+      if (err) return rtn.intrServErr(res);
+      if (!productStored) return rtn.notFound(res, dict.objs.product);
     }
   )
 }
@@ -159,7 +164,7 @@ function getLastPurchases(req, res) {
     .limit(10)
     .populate("userId")
     .exec(function(err, purchases) {
-      if (err) return res.sendStatus(500);
+      if (err) return rtn.intrServErr(res);
       let finalPurchases = purchases.map(purchase => {
         purchase.userId.email = undefined;
         purchase.userId.balance = undefined;
@@ -167,25 +172,25 @@ function getLastPurchases(req, res) {
         purchase.userId.signUpDate = undefined;
         return purchase;
       });
-      return res.status(200).send(finalPurchases);
+      return rtn.obj(res, 200, finalPurchases);
     });
 }
 
 function deletePurchase(req, res) {
   const purchaseId = req.params.id;
-  if (!input.validId(purchaseId)) return res.sendStatus(400);
+  if (!input.validId(purchaseId)) return rtn.status(res, 400);
 
   Purchase.findOne({ _id: purchaseId }, "+userId").exec((err, purchase) => {
-    if (err) return res.sendStatus(500);
-    if (!purchase) return res.sendStatus(404);
+    if (err) return rtn.intrServErr(res);
+    if (!purchase) return rtn.notFound(res, dict.objs.purchase);
 
     User.findOneAndUpdate(
       { _id: purchase.userId },
       { $inc: { balance: purchase.amount } }
     ).exec((err, user) => {
-      if (err) return res.sendStatus(500);
+      if (err) return rtn.intrServErr(res);
       purchase.remove();
-      return res.sendStatus(200);
+      return rtn.status(res, 200);
     });
   });
 }

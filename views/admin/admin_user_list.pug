@@ -1,19 +1,13 @@
 extends ../header_layout
 
 block main-content
-    .col.s12.z-depth-4.card-panel(style='padding: 2em')
-        .row
-            table
-                thead
-                    tr
-                        th
-                            a.btn.rojo.waves-effect.waves-light.texto-oscuro.col.s3(href='/admin/users' title="Back")
-                                i.material-icons.left.tiny arrow_back
-                        th Email
-                        th Name
-                        th Balance
+    .row.valign-wrapper.user-history
+        .col.s12.z-depth-4.card-panel.full-padding
+            ul#userList.collapsible.popout
 
-                tbody#userList
+    div.fixed-action-btn.left
+        a.btn-floating.rojo.waves-effect.waves-light.btn.texto-oscuro(href='/admin/users' title="Back")
+            i.material-icons.center.tiny arrow_back
 
 block scripts
     script(src='/js/admin/admin_user_list.js')

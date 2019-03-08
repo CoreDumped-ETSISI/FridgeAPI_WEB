@@ -139,7 +139,7 @@ main {
   color: white;
 }
 
-#cartList {
+.cartList {
   padding: 15px;
   color: #ccc;
   overflow-y: auto;
@@ -150,7 +150,97 @@ main {
   box-shadow: none;
 }
 
-#cartList img {
+@media only screen and (max-width: 600px) {
+  .invisible {
+    display: none;
+  }
+
+  .history {
+    max-width: 100%;
+    padding: 0em;
+    margin-bottom: 0em;
+  }
+
+  .limit-padding {
+    padding: 0.5em;
+  }
+
+  .main {
+    min-width: 100%;
+    padding: 0em 0.5em 0em 0.5em;
+    margin-bottom: 0em;
+  }
+
+  .user-history {
+    min-width: 100%;
+    padding: 0em 0.5em 0em 0.5em;
+    margin-bottom: 0em;
+  }
+
+  .full-padding {
+    padding: 0.5em !important;
+  }
+
+  .border-radius-max-600px {
+    border-radius: 13px 13px 0px 0px;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .history {
+    min-width: 100%;
+    padding: 0em 2em 0em 2em;
+    margin: 0em;
+  }
+
+  .main {
+    min-width: 100%;
+    padding: 0em 2em 0em 2em;
+    margin-bottom: 0em;
+  }
+
+  .user-history {
+    min-width: 100%;
+    padding: 0em 2em 0em 2em;
+    margin-bottom: 0em;
+  }
+
+  .full-padding {
+    padding: 2em !important;
+  }
+}
+
+.user-image {
+  margin-left: auto;
+  margin-right: auto;
+  width: 48px;
+}
+
+.center-vertically-user-name {
+  margin-top: calc((48px - 1.5em) / 2);
+  margin-bottom: calc((48px - 1.5em) / 2);
+}
+
+.no-margin {
+  margin: 0em;
+}
+
+.no-margin-important {
+  margin: 0em !important;
+}
+
+.max {
+    max-width: 100%;
+    position: relative;
+}
+
+.inside-max {
+    max-width: 100%;
+    width: 100%;
+}
+
+.cartList img {
   border-radius: 50%;
 }
 
@@ -160,6 +250,22 @@ main {
 
 .cartElement {
   font-size: 1.2em;
+  margin: 0.3rem 0rem 0.3rem 0rem;
+}
+
+.cartText {
+  width: 65%;
+  padding-left: 1em;
+}
+
+.cartImage {
+  width: 15%;
+  margin-left: 5%;
+  object-fit: contain;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .header {
@@ -201,6 +307,8 @@ div.center {
   -webkit-background-size: contain;
   background-size: contain;
   background-repeat: no-repeat;
+  width:500px;
+  height:100%;
 }
 
 /*login*/
@@ -530,9 +638,14 @@ span.badge.new {
 }
 
 .max-height-admin-prodSelector {
-    overflow-y: auto;
-    height: 40vh;
-    max-height: 40vh;
-    border-radius: 7px;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  overflow-y: auto;
+  height: 40vh;
+  max-height: 40vh;
+  border-radius: 7px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bold {
+  font-weight: bold;
 }
