@@ -97,8 +97,8 @@ function login(req, res) {
       bcrypt.compare(password, user.password, (err, equals) => {
         if(err) return rtn.intrServErr(res);
         if (!equals) return rtn.message(res, 404, dict.errMsgs.wrongEmailPass);
-        new Promise(resolve => {
-          const token = tokenGen.generate(user);
+       /* new Promise(resolve => {
+           const token = tokenGen.generate(user);
           res.cookie(dict.cT.token, token, {
             maxAge: config.EXP_DAYS * 24 * 3600000,
             httpOnly: true,
@@ -111,14 +111,24 @@ function login(req, res) {
             token: token,
             message: dict.msg200.success
           });
-        })
+        }); */
+        const token = tokenGen.generate(user);
+
+        res.cookie(dict.cT.token, token, {
+          maxAge: config.EXP_DAYS * 24 * 3600000,
+          httpOnly: true,
+          sameSite: true
+        }).status(200).json({
+          isAdmin: services.isAdmin(user),
+           token: token,
+          message: dict.msg200.success
+        });
       });
     });
 }
 
 function logout(req, res) {
-  res.clearCookie(dict.cT.token);
-  return rtn.status(res, 200);
+  return res.clearCookie(dict.cT.token).sendStatus(200);
 }
 
 function updateUserData(req, res) {
