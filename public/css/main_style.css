@@ -154,6 +154,80 @@ main {
   .invisible {
     display: none;
   }
+
+  .history {
+    max-width: 100%;
+    padding: 0em;
+    margin-bottom: 0em;
+  }
+
+  .limit-padding {
+    padding: 0.5em;
+  }
+
+  .main {
+    min-width: 100%;
+    padding: 0em 0.5em 0em 0.5em;
+    margin-bottom: 0em;
+  }
+
+  .user-history {
+    min-width: 100%;
+    padding: 0em 0.5em 0em 0.5em;
+    margin-bottom: 0em;
+  }
+
+  .full-padding {
+    padding: 0.5em;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .history {
+    min-width: 100%;
+    padding: 0em 2em 0em 2em;
+    margin-bottom: 0em;
+  }
+
+  .main {
+    min-width: 100%;
+    padding: 0em 2em 0em 2em;
+    margin-bottom: 0em;
+  }
+
+  .user-history {
+    min-width: 100%;
+    padding: 0em 2em 0em 2em;
+    margin-bottom: 0em;
+  }
+
+  .full-padding {
+    padding: 2em !important;
+  }
+
+  .border-radius-max-600px {
+    border-radius: 13px 13px 0px 0px;
+    overflow: hidden;
+  }
+}
+
+.user-image {
+  width:48px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.center-vertically-user-name {
+  margin-top: calc((48px - 1.5em) / 2);
+  margin-bottom: calc((48px - 1.5em) / 2);
+}
+
+.no-margin {
+  margin: 0em;
+}
+
+.no-margin-important {
+  margin: 0em !important;
 }
 
 .max {
@@ -233,6 +307,8 @@ div.center {
   -webkit-background-size: contain;
   background-size: contain;
   background-repeat: no-repeat;
+  width:500px;
+  height:100%;
 }
 
 /*login*/
@@ -568,4 +644,8 @@ span.badge.new {
   border-radius: 7px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.bold {
+  font-weight: bold;
 }

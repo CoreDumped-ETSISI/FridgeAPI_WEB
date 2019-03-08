@@ -4,7 +4,7 @@ const dict = require("./dictionary");
 
 function returnObj(httpResponse, status, obj){
     //if(obj.message) console.log(`${status}: ${obj.message}`);
-    return httpResponse.status(status).send(obj);
+    return httpResponse.status(status).jsonp(obj);
 }
 
 function returnMessage(httpResponse, status, msg){
@@ -12,7 +12,7 @@ function returnMessage(httpResponse, status, msg){
 }
 
 function sendStatus(res, status){
-    return rtn.status(res, status);
+    return res.sendStatus(status);
 }
 
 function returnNotValidObj(httpResponse, status, objName){
