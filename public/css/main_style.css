@@ -182,7 +182,16 @@ main {
   }
 
   .full-padding {
-    padding: 0.5em;
+    padding: 0.5em !important;
+  }
+
+  .border-radius-max-600px {
+    border-radius: 13px 13px 0px 0px;
+    overflow: hidden;
+  }
+
+  .user-modal {
+    width: 90% !important;
   }
 }
 
@@ -194,7 +203,7 @@ main {
   .history {
     min-width: 100%;
     padding: 0em 2em 0em 2em;
-    margin-bottom: 0em;
+    margin: 0em;
   }
 
   .main {
@@ -213,16 +222,15 @@ main {
     padding: 2em !important;
   }
 
-  .border-radius-max-600px {
-    border-radius: 13px 13px 0px 0px;
-    overflow: hidden;
+  .user-modal {
+    width: 50% !important;
   }
 }
 
 .user-image {
-  width:48px;
   margin-left: auto;
   margin-right: auto;
+  width: 48px;
 }
 
 .center-vertically-user-name {

@@ -154,6 +154,11 @@ main {
   .min-centered-max-left {
     text-align: left;
   }
+  
+  #toast-container {
+    top: 0% !important;
+    bottom: auto !important;
+  }
 
   .invisible {
     display: none;
@@ -189,6 +194,10 @@ main {
     border-radius: 13px 13px 0px 0px;
     overflow: hidden;
   }
+
+  .user-modal {
+    width: 90% !important;
+  }
 }
 
 @media only screen and (min-width: 600px) {
@@ -216,6 +225,10 @@ main {
 
   .full-padding {
     padding: 2em !important;
+  }
+
+  .user-modal {
+    width: 50% !important;
   }
 }
 
@@ -636,13 +649,6 @@ span.badge.new {
 /*toast link*/
 .toast a {
   color: #cccccc !important;
-}
-
-@media only screen and (max-width: 600px) {
-  #toast-container {
-    top: 0% !important;
-    bottom: auto !important;
-  }
 }
 
 .max-height-admin-prodSelector {
