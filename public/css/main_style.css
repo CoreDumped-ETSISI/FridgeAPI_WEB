@@ -154,6 +154,11 @@ main {
   .min-centered-max-left {
     text-align: left;
   }
+  
+  #toast-container {
+    top: 0% !important;
+    bottom: auto !important;
+  }
 
   .invisible {
     display: none;
@@ -193,6 +198,11 @@ main {
   .user-modal {
     width: 90% !important;
   }
+}
+
+.cartEmptySpan {
+  width: 100%;
+  color:#aaa;
 }
 
 @media only screen and (min-width: 600px) {
@@ -644,13 +654,6 @@ span.badge.new {
 /*toast link*/
 .toast a {
   color: #cccccc !important;
-}
-
-@media only screen and (max-width: 600px) {
-  #toast-container {
-    top: 0% !important;
-    bottom: auto !important;
-  }
 }
 
 .max-height-admin-prodSelector {

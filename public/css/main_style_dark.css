@@ -200,6 +200,11 @@ main {
   }
 }
 
+.cartEmptySpan {
+  width: 100%;
+  color:#aaa; 
+}
+
 @media only screen and (min-width: 600px) {
   .min-centered-max-left {
     text-align: center;

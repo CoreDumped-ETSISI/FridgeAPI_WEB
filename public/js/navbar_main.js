@@ -10,7 +10,7 @@ function getProfile() {
     request('GET', '/user', null, (res) => {
         user = res;
         if (user.avatarImage) {
-            cleanAndAppend("#photo", '<img class="responsive-img circle" src="' + user.avatarImage + '">');
+            cleanAndAppend("#photo", `<img class="responsive-img circle" src="${user.avatarImage}?lastmod=${Date.now()}">`);
             $("#userImage").attr("src", user.avatarImage);
         }
         cleanAndAppend(".name", user.displayName);
@@ -65,7 +65,11 @@ function resetFields() {
     $('#user_pass').val('');
     $('#user_repass').val('');
     $('#userImage').attr("src", "/images/default-product-image.jpg");
-    if (croppieObj) croppieObj.destroy();
+    
+    if (croppieObj){
+        croppieObj.destroy();
+        initFileInput("userImage", "fileElem");
+    }
 }
 
 function deleteCredentials() {

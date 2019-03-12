@@ -8,7 +8,10 @@ loadProductList();
 function loadProductList() {
     request('GET', '/product', null, (res) => {
         for (let i = 0; i < res.length; i++) {
-            $("#comboProducts").append('<option value="' + res[i]._id + '" data-icon="' + res[i].image + '" class="right">' + res[i].name + ' (' + res[i].price + '€)' + '</option>');
+            $("#comboProducts").append(
+                `<option value="${res[i]._id}" data-icon="${res[i].image}?lastmod=${Date.now()}">
+                    ${res[i].name} (${res[i].price} €)
+                </option>`);
         }
         $('select').formSelect();
     });
@@ -49,5 +52,14 @@ function resetFields() {
     $('#productPrice').val("");
     $('#productUnits').val("");
     $('#productImage').attr("src", "/images/default-product-image.jpg");
-    if (croppieObj) croppieObj.destroy();
+
+    cleanAndAppend("#comboProducts", '<option class="right" disabled selected>...</option>');
+    loadProductList();
+
+    if (croppieObj){
+        croppieObj.destroy();
+        cleanAndAppend('#imageRow', `<img class="circle responsive-img col s10 offset-s1 m6 offset-m3 l8 offset-l2" id="productImage" src="/images/default-product-image.jpg" style="object-fit: cover; padding: 0;">
+            <input id="fileElem" type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'productImage')">`);
+        initFileInput("productImage", "fileElem");
+    }
 }

@@ -39,7 +39,7 @@ function productCard(product) {
 }
 
 function listIsEmpty() {
-    $("#cartList").append('<span id="empty" style="width: 100%; color:#aaa;">No hay productos en la oferta :(</span>');
+    $("#cartList").append('<span id="empty" class="cartEmptySpan">No hay productos en la oferta :(</span>');
 }
 
 function addToCart(id) {
