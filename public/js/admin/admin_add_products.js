@@ -30,5 +30,11 @@ function resetFields() {
     $('#stock').val("");
     $('#marketPrice').val("");
     $('#productImage').attr("src", "/images/default-product-image.jpg");
-    if(croppieObj) croppieObj.destroy();
+    
+    if (croppieObj){
+        croppieObj.destroy();
+        cleanAndAppend("#imageRow", `<img class="circle responsive-img col s10 offset-s1 m6 offset-m3 l8 offset-l2" id="productImage" src="/images/default-product-image.jpg" style="object-fit: cover; padding: 0;">
+          <input id="fileElem" type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'productImage')">`);
+        initFileInput("productImage", "fileElem");
+    }
 }

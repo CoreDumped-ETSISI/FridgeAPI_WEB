@@ -1,7 +1,8 @@
 function loadProductList() {
     request('GET', '/product', null, (res) => {
         for (let i = 0; i < res.length; i++) {
-            $("#comboProducts").append('<option value="' + res[i]._id + '" data-icon="' + res[i].image + '" class="right">' + res[i].name + ' (' + res[i].stock + ' units)' + '</option>');
+            $("#comboProducts").append(`<option value="${res[i]._id}" data-icon="${res[i].image}?lastmod=${Date.now()}" class="right">
+            ${res[i].name} (${res[i].stock} units)</option>`);
         }
         $('select').formSelect();
     });
@@ -23,8 +24,7 @@ function sendStock() {
 }
 
 function resetFields() {
-    $("#comboProducts").empty();
-    $("#comboProducts").append('<option class="right" disabled selected>...</option>');
+    cleanAndAppend("#comboProducts", '<option class="right" disabled selected>...</option>');
     loadProductList();
     $('#productStock').val("");
 }

@@ -18,9 +18,9 @@ function loadProductList() {
     offers = res;
     for (let i = 0; i < res.length; i++) {
       $("#comboProducts").append(
-        `<option value="${res[i]._id}" data-icon="${res[i].image}">${
-          res[i].name
-        }</option>`
+        `<option value="${res[i]._id}" data-icon="${res[i].image}?lastmod=${Date.now()}">
+          ${res[i].name} (${res[i].price} €)
+        </option>`
       );
     }
     $("select").formSelect();
@@ -69,13 +69,15 @@ function sendStock() {
       formData.append("products", itemChain);
 
       requestXhr("PATCH", "/offer/" + idOffer, formData, res => {
-        $("#comboProducts").empty();
-        $("#comboProducts").append(
-          '<option class="right" disabled selected>...</option>'
-        );
+        cleanAndAppend("#comboProducts", '<option class="right" disabled selected>...</option>');
         loadProductList();
         resetFields();
-        if (croppieObj) croppieObj.destroy();
+        if (croppieObj){
+          croppieObj.destroy();
+          cleanAndAppend("#imageRow", `<img class="circle responsive-img col s10 offset-s1 m6 offset-m3 l8 offset-l2" id="productImage" src="/images/default-product-image.jpg" style="object-fit: cover; padding: 0;">
+            <input id="fileElem" type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'productImage')">`);
+          initFileInput("productImage", "fileElem");
+        }
         M.toast({ html: "Offer updated", classes: "green" });
       });
 

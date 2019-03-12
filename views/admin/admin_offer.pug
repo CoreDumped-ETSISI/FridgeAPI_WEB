@@ -3,7 +3,7 @@ extends ../header_layout
 block main-content
     .col.s12.m10.offset-m1.l6.offset-l3.z-depth-4.card-panel(style='padding: 2em')
         form.login-form
-            .row(style='margin-bottom: 0.5em')
+            .row#imageRow(style='margin-bottom: 0.5em')
                 img#productImage.circle.responsive-img.col.s10.offset-s1.m6.offset-m3.l8.offset-l2(src="/images/default-product-image.jpg" style="object-fit: cover; padding: 0;")
                 input#fileElem(type="file" accept="image/*" style="display:none" onchange="handleFiles(this.files,'productImage')")
             .row(style='margin-bottom: 0em')
