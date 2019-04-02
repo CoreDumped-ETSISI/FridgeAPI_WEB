@@ -68,7 +68,7 @@ function signUp(req, res) {
           user.verifyEmailToken
         );
 
-        image.saveToDisk(req.file, imagePath, null);
+        image.saveToDisk(req.file, imagePath, config.USER_IMAGES_PATH, null);
 
         return rtn.message(res, 200, dict.msg200.userCreated);
       });
@@ -167,7 +167,7 @@ function updateUserData(req, res) {
     if (!user) return rtn.notFound(res, dict.objs.user);
 
     if (updatedFields.avatarImage)
-      image.saveToDisk(req.file, updatedFields.avatarImage, null);
+      image.saveToDisk(req.file, updatedFields.avatarImage, config.USER_IMAGES_PATH, null);
 
     user.set(updatedFields);
     user.save(err => {

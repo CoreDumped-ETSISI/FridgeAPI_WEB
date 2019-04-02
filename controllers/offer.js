@@ -173,7 +173,7 @@ function updateOffer(req, res) {
             image.convertToValidName(offer.name) + ext
           );
         updatedFields.image = imagePath;
-        image.saveToDisk(req.file, imagePath, null);
+        image.saveToDisk(req.file, imagePath, config.OFFERS_IMAGES_PATH, null);
       }
       offer.set(updatedFields);
       offer.save((err, offerStored) => {
@@ -226,7 +226,7 @@ function saveOffer(req, res) {
       });
       offer.save((err, offerStored) => {
         if (err) return rtn.intrServErr(res);
-        if (ext) image.saveToDisk(req.file, imagePath, null);
+        if (ext) image.saveToDisk(req.file, imagePath, config.OFFERS_IMAGES_PATH, null);
         return rtn.obj(res, 200, offerStored);
       });
     });

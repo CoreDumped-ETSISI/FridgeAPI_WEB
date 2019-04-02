@@ -87,7 +87,7 @@ function updateProduct(req, res) {
                 else
                     imagePath = path.join(config.PRODUCTS_IMAGES_PATH, image.convertToValidName(product.name) + ext);
                 updatedFields.image = imagePath;
-                image.saveToDisk(req.file, imagePath, null);
+                image.saveToDisk(req.file, imagePath, config.PRODUCTS_IMAGES_PATH, null);
             }
             product.set(updatedFields);
             product.save((err, productStored) => {
@@ -158,7 +158,7 @@ function saveProduct(req, res) {
 
         product.save((err, productStored) => {
             if (err) return rtn.intrServErr(res);
-            if(ext) image.saveToDisk(req.file, imagePath, null);
+            if(ext) image.saveToDisk(req.file, imagePath, config.PRODUCTS_IMAGES_PATH, null);
             return rtn.obj(res, 200, productStored)
         })
     })

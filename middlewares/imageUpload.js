@@ -30,21 +30,17 @@ function imageFormat(file) {
     return ext;
 }
 
-async function saveToDisk(file, imagePath, next) {
+async function saveToDisk(file, imagePath, folderPath, next) {
     if(!next) next = () => {};
     imagePath = path.join('./public', imagePath);
-    await checkIfExistsPath(imagePath);
+    await checkIfExistsPath(`./public${folderPath}`);
     fs.writeFile(imagePath, file.buffer, 'binary', next);
 }
 
 function checkIfExistsPath(url) {
     return new Promise((resolve) => {
-        var to = url.lastIndexOf('\\');
-        to = to == -1 ? url.length : to + 1;
-        let path = url.substring(0, to);
-
-        if (!fs.existsSync(path)) {
-            fs.mkdirSync(path);
+        if (!fs.existsSync(url)) {
+            fs.mkdirSync(url);
         }
 
         resolve();
