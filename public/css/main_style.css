@@ -111,6 +111,10 @@ body {
 
 .logo-header {
   background: url("/images/logo.png");
+  background-position: 50% 50%;
+  -webkit-background-size: contain;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 /*login*/
