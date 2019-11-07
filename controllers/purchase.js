@@ -106,7 +106,11 @@ function savePurchase(req, res) {
               if (err) return rtn.intrServErr(res);
 
               for (let x = 0; x < products.length; x++) {
-                await updateProdStock(products[x], productIdList);
+                try {
+                  await updateProdStock(products[x], productIdList);
+                } catch (e) {
+                  return rtn;
+                }
               }
 
               return rtn.obj(res, 200, purchaseStored);
@@ -119,14 +123,25 @@ function savePurchase(req, res) {
 }
 
 function updateProdStock(product, productIdList) {
-  const count = services.countOccurrences(product._id, productIdList);
-  product.updateOne(
-    { $inc: { stock: -count } },
-    (err, productStored) => {
-      if (err) return rtn.intrServErr(res);
-      if (!productStored) return rtn.notFound(res, dict.objs.product);
-    }
-  )
+  return new Promise((resolve, reject) => {
+    const count = services.countOccurrences(product._id, productIdList);
+    product.updateOne(
+      { $inc: { stock: -count } },
+      (err, productStored) => {
+        if (err) {
+          rtn.intrServErr(res);
+          reject();
+        }
+        else if (!productStored) {
+          rtn.notFound(res, dict.objs.product);
+          reject();
+        }
+        else {
+          resolve();
+        }
+      }
+    )
+  })
 }
 
 function productIdListGenerator(offers, offerList, productList){
