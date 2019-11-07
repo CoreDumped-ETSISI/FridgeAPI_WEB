@@ -16,6 +16,10 @@
   transition: background 0.5s linear;
 }
 
+#slide-out {
+  max-height: 100vh;
+}
+
 .sidebar-button {
   width: 100%;
   border-radius: 25px;
