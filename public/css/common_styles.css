@@ -363,6 +363,7 @@ div.center {
 
 .product-item {
   border-radius: 7px;
+  min-width: 100%;
 }
 
 .product-item:active {
