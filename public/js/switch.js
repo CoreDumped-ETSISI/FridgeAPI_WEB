@@ -3,10 +3,11 @@ const lightCss = "/css/main_style.css";
 const darkCss = "/css/main_style_dark.css";
 const typeSheet = "stylesheet";
 
+console.log("My body is ready!");
 prepareSwitchPosition();
 
 // Initialize the switch in the proper position and the equivalent value
-function prepareSwitchPosition() {
+async function prepareSwitchPosition() {
   var s = document.getElementById("switchCheckbox");
   
   if (!localStorage.getItem(keyName)){
@@ -15,14 +16,21 @@ function prepareSwitchPosition() {
 
   if (localStorage.getItem(keyName) === "true") {
     if (s) {
-      localStorage.setItem(keyName, false);
-      s.click();
+      await initialSwitchPosition(s);
     } else {
       changeStyleSheet(darkCss);
     }
   } else {
     changeStyleSheet(lightCss);
   }
+}
+
+function initialSwitchPosition(s) {
+  return new Promise((resolve, reject) => {
+    localStorage.setItem(keyName, false);
+    s.click();
+    resolve();
+  });
 }
 
 // Configure the proper result of the switch.
