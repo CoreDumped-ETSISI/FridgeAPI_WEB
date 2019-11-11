@@ -15,6 +15,7 @@ npm install
 
 In order to run this project, a JS file is missing: config.js
 This file must be created and configured manually with the parameters described below:
+```
 module.exports = {
 
     SO: "YOUR_OPERATIVE_SYSTEM",
@@ -64,7 +65,7 @@ module.exports = {
 
     PROFIT: PROFIT_MULTIPLIER
 };
-
+```
 ## Run
 
 ```
