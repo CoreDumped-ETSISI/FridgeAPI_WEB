@@ -36,16 +36,10 @@ function storeSwitchValue() {
 function initialSwitchPosition(s) {
   return new Promise((resolve, reject) => {
     new Promise((resolve, reject) => {
-      if (window.performance) {
-        // Check if the page cames from navigation
-        if (performance.navigation.type == 0) {
-          localStorage.setItem(keyName, false);
-          s.click();
-        } else if (performance.navigation.type == 1) {
-          console.info("This page is reloaded");
-        } else {
-          console.info("This page is not reloaded");
-        }
+      // Check if the page cames from navigation
+      if (window.performance && performance.navigation.type == 0) {
+        localStorage.setItem(keyName, false);
+        s.click();
       }
       resolve()
     }).then(response => {
